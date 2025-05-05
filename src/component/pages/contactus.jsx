@@ -1,8 +1,9 @@
 import { Mail, PhoneCall } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import emailjs from "@emailjs/browser";
+import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import BaseURL from "../../baseurl";
 import Select from "react-select";
 import { FlagIcon } from "react-flag-kit"; // Alternative to react-country-flag
 
@@ -61,47 +62,40 @@ export default function Contactus() {
 
   const [showPopup, setShowPopup] = useState(false);
 
-  function handleSubmit(e) {
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const serviceID = "service_bncdgoe";
-    const templateID = "template_4n9065m";
-    const userID = "xM_ia1stj7vn6JB_o";
+    try {
+      await axios.post(`${BaseURL}/api/contact/send`, contactdata);
+      setContactData({
+        name: "",
+        email: "",
+        message: "",
+        contactNumber: "",
+        companyName: "",
+        country: "",
+        companyWebsite: "",
+      });
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+        navigate("/");
+      }, 3000);
+    } catch (error) {
+      console.error("Email send failed:", error);
+    }
+  };
 
-    emailjs.send(serviceID, templateID, contactdata, userID).then(
-      (response) => {
-        console.log("SUCCESS", response.status, response.text);
-        setContactData({
-          name: "",
-          email: "",
-          message: "",
-          contactNumber: "",
-          companyName: "",
-          country: "",
-          companyWebsite: "",
-        });
-        setShowPopup(true);
-        setTimeout(() => {
-          setShowPopup(false);
-          navigate("/");
-        }, 3000);
-      },
-      (error) => {
-        console.log("FAILED", error);
-      }
-    );
-  }
-
-  function handleContactData(e) {
+  const handleContactData = (e) => {
     const { name, value } = e.target;
     setContactData({ ...contactdata, [name]: value });
-  }
+  };
 
-  // Handle country selection
   const handleCountryChange = (selectedOption) => {
     setContactData({
       ...contactdata,
-      country: selectedOption ? selectedOption.value : "",
+      country: selectedOption ? selectedOption.label : "",
     });
   };
 
