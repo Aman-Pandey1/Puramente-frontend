@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import emailjs from "@emailjs/browser";
 import { useCart } from "./cartcontext";
+import BaseURL from "../../baseurl";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { FlagIcon } from "react-flag-kit";
@@ -44,9 +44,8 @@ const countryOptions = [
   { value: "IE", label: "Ireland", flag: "IE" },
   { value: "LT", label: "Lithuania", flag: "LT" },
   { value: "LU", label: "Luxembourg", flag: "LU" },
-  { value: "MC", label: "Monaco", flag: "MC" }
+  { value: "MC", label: "Monaco", flag: "MC" },
 ];
-
 
 const Checkout = () => {
   const { cartItems, updateQuantity, removeFromCart } = useCart();
@@ -116,46 +115,22 @@ const Checkout = () => {
     const excelFileBase64 = generateExcelFile();
 
     try {
-      // Submit to backend to save order and get download link
       const backendResponse = await axios.post(
-        "http://localhost:8000/api/orders/submit-order",
+        `${BaseURL}/api/orders/submit-order`,
         {
           ...formData,
           orderDetails: cartItems.map((item) => ({
             name: item.name,
             sku: item.code,
             quantity: item.quantity,
-            imageurl:item.imageurl
+            imageurl: item.imageurl,
           })),
           attachment: excelFileBase64,
         }
       );
 
-      // Extract download link from backend response
       const { downloadLink } = backendResponse.data;
-
-      // Send email from frontend with download link
-      const emailParams = {
-        from_name: formData.firstName,
-        email: formData.email,
-        message: formData.message,
-        order_details: cartItems
-          .map(
-            (item) =>
-              `<p><strong>${item.name}</strong> (SKU: ${item.code}) - Qty: ${item.quantity}</p>`
-          )
-          .join(""),
-        download_link: downloadLink, // Use the link from backend
-        attachment: excelFileBase64,
-        filename: "Order_Details.xlsx",
-      };
-
-      await emailjs.send(
-        "service_bncdgoe", // Your service ID
-        "template_ms65flp", // Your template ID
-        emailParams,
-        "xM_ia1stj7vn6JB_o" // Your public key
-      );
+      console.log(downloadLink);
 
       cartItems.forEach((item) => removeFromCart(item._id));
       setShowPopup(true);
@@ -172,14 +147,14 @@ const Checkout = () => {
       );
     }
   };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-cyan-50 to-cyan-100 py-12 px-4 sm:px-6 lg:px-12">
       {showPopup && (
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-opacity-50 bg-cyan-200 p-6 rounded-lg shadow-lg z-50 max-w-md w-full">
           <h2 className="text-lg font-semibold text-center">
-          Your price request form has been submitted successfully.! 🎉 We'll update you soon
-            with shipping details. Thank you for shopping with us!
+            Your price request form has been submitted successfully.! 🎉 We'll
+            update you soon with shipping details. Thank you for shopping with
+            us!
           </h2>
         </div>
       )}
