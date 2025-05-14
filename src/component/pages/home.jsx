@@ -17,7 +17,6 @@ export default function Home() {
       <HomeProductCard />
       <Topproduct />
       <WhoWeAre />
-    
       <Jewelryinfo />
       <InfoCards />
       <VideoSection />
