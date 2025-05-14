@@ -10,9 +10,9 @@ export default function TopProduct() {
   const [products, setProducts] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(4);
-  const [clickedProductId, setClickedProductId] = useState(null); // Track clicked product ID
-  
-  const { addToCart } = useCart();
+  const [addedProducts, setAddedProducts] = useState([]);
+
+  const { addToCart, removeFromCart } = useCart(); // Make sure removeFromCart exists in your context
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true, easing: "ease-out-cubic" });
@@ -24,7 +24,7 @@ export default function TopProduct() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get(`${BaseURL}/api/products`); // Replace with actual API URL
+      const response = await axios.get(`${BaseURL}/api/products`);
       setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -45,13 +45,16 @@ export default function TopProduct() {
     setStartIndex((prev) => Math.min(prev + 1, products.length - itemsPerPage));
   };
 
-  const handleAddToCart = (product) => {
-    addToCart(product);
-    setClickedProductId(product._id); // Set clicked product ID to change its button text
+  const handleToggleCart = (product) => {
+    const isAlreadyAdded = addedProducts.includes(product._id);
 
-    setTimeout(() => {
-      setClickedProductId(null); // Reset clicked product ID after 4 seconds
-    }, 4000);
+    if (isAlreadyAdded) {
+      removeFromCart(product._id);
+      setAddedProducts((prev) => prev.filter((id) => id !== product._id));
+    } else {
+      addToCart(product);
+      setAddedProducts((prev) => [...prev, product._id]);
+    }
   };
 
   return (
@@ -69,9 +72,7 @@ export default function TopProduct() {
             onClick={scrollLeft}
             disabled={startIndex === 0}
             className={`absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 bg-cyan-600 text-white p-3 rounded-full shadow-lg z-10 transition ${
-              startIndex === 0
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-cyan-700"
+              startIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-cyan-700"
             }`}
           >
             ◀
@@ -80,51 +81,56 @@ export default function TopProduct() {
           <div className="flex space-x-4 md:space-x-6 overflow-hidden w-full justify-center p-4">
             {products
               .slice(startIndex, startIndex + itemsPerPage)
-              .map((product, index) => (
-                <div
-                  key={product._id}
-                  data-aos="fade-up"
-                  data-aos-delay={index * 150}
-                  className="w-1/2 sm:w-64 bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-cyan-100"
-                >
-                  <Link to={`/singleproduct/${product._id}`}>
-                    <div className="relative flex justify-between items-center h-40 sm:h-56 overflow-hidden">
-                      <img
-                        src={product.image ? product.image : product.imageurl}
-                        alt={product.title}
-                        className="w-full h-full object-contain transition-transform duration-700 hover:scale-110"
-                      />
-                    </div>
-                  </Link>
-
-                  <div className="p-4">
+              .map((product, index) => {
+                const isAdded = addedProducts.includes(product._id);
+                return (
+                  <div
+                    key={product._id}
+                    data-aos="fade-up"
+                    data-aos-delay={index * 150}
+                    className="w-1/2 sm:w-64 bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-cyan-100"
+                  >
                     <Link to={`/singleproduct/${product._id}`}>
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-xs sm:text-sm text-cyan-600 font-medium bg-cyan-50 px-2 py-1 rounded-full capitalize">
-                          {product.name}
-                        </span>
-                        <span className="text-xs text-cyan-500 font-mono bg-cyan-50 px-2 py-1 rounded-full">
-                          {product.code}
-                        </span>
+                      <div className="relative flex justify-between items-center h-40 sm:h-56 overflow-hidden">
+                        <img
+                          src={product.image || product.imageurl}
+                          alt={product.title}
+                          className="w-full h-full object-contain transition-transform duration-700 hover:scale-110"
+                        />
                       </div>
                     </Link>
-                    <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-2">
-                      {product.title}
-                    </h3>
-                    <Link to={`/singleproduct/${product._id}`}>
-                      <p className="text-xs line-clamp-2 sm:text-sm text-gray-600 mb-2">
-                        {product.description}
-                      </p>
-                    </Link>
-                    <button
-                      onClick={() => handleAddToCart(product)}
-                      className="mt-4 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
-                    >
-                      {clickedProductId === product._id ? "Product Added✅" : "Add To List"}
-                    </button>
+
+                    <div className="p-4">
+                      <Link to={`/singleproduct/${product._id}`}>
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-xs sm:text-sm text-cyan-600 font-medium bg-cyan-50 px-2 py-1 rounded-full capitalize">
+                            {product.name}
+                          </span>
+                          <span className="text-xs text-cyan-500 font-mono bg-cyan-50 px-2 py-1 rounded-full">
+                            {product.code}
+                          </span>
+                        </div>
+                      </Link>
+                      <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-2">
+                        {product.title}
+                      </h3>
+                      <Link to={`/singleproduct/${product._id}`}>
+                        <p className="text-xs line-clamp-2 sm:text-sm text-gray-600 mb-2">
+                          {product.description}
+                        </p>
+                      </Link>
+                      <button
+                        onClick={() => handleToggleCart(product)}
+                        className={`mt-4 w-full ${
+                          isAdded ? "bg-cyan-700 hover:bg-cyan-800" : "bg-cyan-500 hover:bg-cyan-600"
+                        } text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
+                      >
+                        {isAdded ? "Remove from List ❌" : "Add To List"}
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
           </div>
 
           <button

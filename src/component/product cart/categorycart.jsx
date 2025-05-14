@@ -11,7 +11,7 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [addedProducts, setAddedProducts] = useState([]); // <-- plural for multiple products
-  const { addToCart } = useCart();
+  const { addToCart, removeFromCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,12 +29,20 @@ export default function CategoryPage() {
     };
 
     fetchProducts();
+
+    const savedCart = sessionStorage.getItem("cart");
+    const parsedCart = savedCart ? JSON.parse(savedCart) : [];
+    setAddedProducts(parsedCart.map((item) => item._id));
   }, [category]);
 
-  // Handle Add to Cart button click
   const handleAddToCart = (product) => {
     addToCart(product);
-    setAddedProducts((prev) => [...prev, product._id]); // Add product id to the array
+    setAddedProducts((prev) => [...prev, product._id]);
+  };
+
+  const handleRemoveFromCart = (_id) => {
+    removeFromCart(_id);
+    setAddedProducts((prev) => prev.filter((id) => id !== _id));
   };
 
   return (
@@ -78,17 +86,22 @@ export default function CategoryPage() {
                 <p className="text-xs text-cyan-500 mt-2 font-medium">
                   Design Code: <span className="font-semibold">{product.code}</span>
                 </p>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  className={`mt-4 w-full ${
-                    addedProducts.includes(product._id)
-                      ? "bg-cyan-700"
-                      : "bg-cyan-500"
-                  } text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105`}
-                  disabled={addedProducts.includes(product._id)}
-                >
-                  {addedProducts.includes(product._id) ? "Product Added ✅" : "Add To List"}
-                </button>
+
+                {addedProducts.includes(product._id) ? (
+                  <button
+                    onClick={() => handleRemoveFromCart(product._id)}
+                    className="mt-4 w-full bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-800 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Remove from List ❌
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddToCart(product)}
+                    className="mt-4 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Add To List
+                  </button>
+                )}
               </div>
 
               <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-100 rounded-full -mr-12 -mt-12 opacity-50" />
