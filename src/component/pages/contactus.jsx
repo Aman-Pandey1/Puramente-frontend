@@ -278,7 +278,7 @@ export default function Contactus() {
               </form>
             </div>
 
-            <div className="space-y-12">
+            <div className="space-y-12 grid-cols-1">
               <div className="bg-white lg:h-96 rounded-2xl shadow-xl p-8 flex flex-col justify-center items-center">
                 <div className="p-4 bg-gray-100 rounded-full mb-4">
                   <PhoneCall className="w-12 h-12 text-gray-700" />
@@ -298,6 +298,9 @@ export default function Contactus() {
                 <p className="text-gray-600 font-medium text-lg">
                   info@puramenteinternational.com
                 </p>
+              </div>
+              <div>
+                <img src="/contactus2.png" alt="" />
               </div>
             </div>
           </div>
