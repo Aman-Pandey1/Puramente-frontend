@@ -12,7 +12,7 @@ const VisitJaipur = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Visit Jaipur
+        Visit Us in Jaipur
       </motion.h1>
       <p className="text-lg text-cyan-700 text-center max-w-3xl mx-auto mb-8">
         Uncover the Artistry, Experience the Elegance with Puramente International

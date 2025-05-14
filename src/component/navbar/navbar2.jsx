@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaYoutube } from "react-icons/fa6";
+import { FaLinkedin, FaYoutube } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa";
 import { IsAdmin } from "../authantication/isauthanticat";
 import { AiFillInstagram } from "react-icons/ai";
@@ -150,6 +150,7 @@ export default function Navbar2() {
               >
                 <FaYoutube className="h-6 hover:text-cyan-500 w-8" />
               </a>
+             
             </div>
           )}
         </div>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FaYoutube } from "react-icons/fa6";
+import { FaLinkedin, FaYoutube } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 
@@ -50,6 +50,14 @@ export default function Footer() {
               >
                 <FaYoutube className="h-6 w-8" />
               </a>
+                <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.linkedin.com/company/puramente-international/"
+                className="hover:text-cyan-500"
+              >
+                <FaLinkedin className="h-6 w-8" />
+              </a>
             </div>
           </div>
         </div>
@@ -65,7 +73,7 @@ export default function Footer() {
               {t("Contact us")}
             </Link>
             <Link to="/visitjaipur" className="hover:text-cyan-500">
-              Visit Jaipur
+              Visit Us in Jaipur
             </Link>
           </div>
 
@@ -139,6 +147,7 @@ export default function Footer() {
               >
                 <FaYoutube className="h-6 w-8" />
               </a>
+              
             </div>
           </div>
           <div className="flex items-center w-1/2 flex-col gap-2">

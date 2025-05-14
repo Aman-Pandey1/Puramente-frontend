@@ -296,7 +296,7 @@ export default function Contactus() {
                   {t("write_to_us")}
                 </h3>
                 <p className="text-gray-600 font-medium text-lg">
-                  info@puramenteinternational.com
+                  info@puramentejewel.com
                 </p>
               </div>
               <div>
@@ -325,10 +325,10 @@ export default function Contactus() {
           <p className="m-12 flex flex-col justify-center items-center gap-4 text-center text-xl font-semibold text-black">
               <h1><MapPin size={40}/></h1>
 
-            Puramente International, Building No. 607, Ram Bhawan, Vidhyadhar Ka Rasta, Johri Bazar, Jaipur - 302003
+           Address: 83/1 Ground Floor, Chetak Marg, Sector 8, Pratap Nagar, Jaipur-302033
           </p>
           <p className="lg:text-xl text-center font-semibold text-black">
-            {t("phone")}: 1414911855, +91 7023555055
+            {t("phone")}: +91 9314 346 148
           </p>
           <p className="lg:text-xl text-center font-semibold text-black">{t("timings")}</p>
         </div>

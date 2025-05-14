@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Faqsection() {
   const [openIndex, setOpenIndex] = useState(null);
@@ -31,7 +32,7 @@ function Faqsection() {
     },
     {
       question: "How can I contact Puramente International for inquiries or orders?",
-      answer: "You can reach us via our website contact form, email at info@puramenteinternational.com, or by phone at +1-800-555-0123. Our team is available to assist with inquiries and orders Monday through Friday, 9 AM to 5 PM EST.",
+      answer: "You can reach us via our website contact form, email at  info@puramentejewel.com, or by phone at +91 9314 346 148. Our team is available to assist with inquiries and orders",
     },
     {
       question: "Is Puramente International committed to sustainable practices?",
@@ -126,12 +127,12 @@ function Faqsection() {
         <div className="text-center text-cyan-700 mt-6 sm:mt-8">
           <p className="text-base sm:text-lg mb-2">
             Still have questions?{' '}
-            <a
-              href="#contact"
+            <Link
+              to="contactus"
               className="font-semibold hover:text-cyan-900 transition-colors duration-300 underline underline-offset-4"
             >
               Contact our support team
-            </a>
+            </Link>
           </p>
          
         </div>
