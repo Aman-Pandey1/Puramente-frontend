@@ -25,7 +25,7 @@ export default function LanguageSwitcher() {
   }, []);
 
   return (
-    <div className="absolute top-8 -right-13">
+    <div className="absolute top-8  right-0 ">
       <div id="google_translate_element"></div>
     </div>
   );
