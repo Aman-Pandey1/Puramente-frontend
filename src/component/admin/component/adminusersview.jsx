@@ -75,7 +75,6 @@ export default function AdminUserView() {
                 </thead>
                 <tbody>
                   {filteredUsers.map((user, index) => {
-                   
                     return (
                       <tr
                         key={user._id}

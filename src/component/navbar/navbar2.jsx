@@ -13,40 +13,40 @@ export default function Navbar2() {
       name: "Necklace",
       category: "Necklaces",
       subcategories: [
-        { name: "With Gemstone", path: "with-gemstone" },
-        { name: "Without Gemstone", path: "without-gemstone" },
+        { name: "With Gemstone", path: "withgemstone" },
+        { name: "Without Gemstone", path: "withoutgemstone" },
       ],
     },
     {
       name: "Earring",
       category: "Earrings",
       subcategories: [
-        { name: "With Gemstone", path: "with-gemstone" },
-        { name: "Without Gemstone", path: "without-gemstone" },
+        { name: "With Gemstone", path: "withgemstone" },
+        { name: "Without Gemstone", path: "withoutgemstone" },
       ],
     },
     {
       name: "Bracelet",
       category: "Bracelets",
       subcategories: [
-        { name: "With Gemstone", path: "with-gemstone" },
-        { name: "Without Gemstone", path: "without-gemstone" },
+        { name: "With Gemstone", path: "withgemstone" },
+        { name: "Without Gemstone", path: "withoutgemstone" },
       ],
     },
     {
       name: "Ring",
       category: "Rings",
       subcategories: [
-        { name: "With Gemstone", path: "with-gemstone" },
-        { name: "Without Gemstone", path: "without-gemstone" },
+        { name: "With Gemstone", path: "withgemstone" },
+        { name: "Without Gemstone", path: "withoutgemstone" },
       ],
     },
     {
       name: "Pendant",
       category: "Pendant",
       subcategories: [
-        { name: "With Gemstone", path: "with-gemstone" },
-        { name: "Without Gemstone", path: "without-gemstone" },
+        { name: "With Gemstone", path: "withgemstone" },
+        { name: "Without Gemstone", path: "withoutgemstone" },
       ],
     },
   ];

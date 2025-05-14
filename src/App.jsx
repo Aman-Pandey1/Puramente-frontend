@@ -2,6 +2,7 @@ import Shopall from "./component/pages/shopall";
 import Contactus from "./component/pages/contactus";
 import Sign2 from "./component/pages/sign2";
 import Home from "./component/pages/home";
+import SubCategoryPage from "./component/product cart/subcategory";
 import Login2 from "./component/pages/login2";
 import Checkout from "../src/component/newcomponent/checkout";
 import { CartProvider } from "./component/newcomponent/cartcontext";
@@ -36,6 +37,11 @@ function App() {
               <Route path="/shopall" element={<Shopall />}></Route>
               <Route path="/aboutus" element={<Aboutus />}></Route>
               <Route path="/contactus" element={<Contactus />}></Route>
+              <Route
+                path="/category/:category/:subcategory"
+                element={<SubCategoryPage />}
+              />
+
               <Route path="/profile" element={<Profile />}></Route>
               <Route path="/userview" element={<AdminUserView />}></Route>
               {/* admin routes */}
@@ -46,9 +52,9 @@ function App() {
               <Route path="/singleproduct" element={<SingleProduct />}></Route>
               <Route path="/category" element={<Category />}></Route>
               <Route path="/fairtrade" element={<Fairtradepage />}></Route>
-              <Route path="privacy" element={<PrivacyPolicy/>}></Route>
-              <Route path="faq"element={<Faqsection/>}></Route>
-              <Route path="visitjaipur"element={<VisitJaipur/>}></Route>
+              <Route path="privacy" element={<PrivacyPolicy />}></Route>
+              <Route path="faq" element={<Faqsection />}></Route>
+              <Route path="visitjaipur" element={<VisitJaipur />}></Route>
               <Route
                 path="/category/:category"
                 element={<Categorycart />}

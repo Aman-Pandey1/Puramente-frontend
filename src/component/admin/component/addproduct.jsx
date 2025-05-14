@@ -10,6 +10,7 @@ const AddProduct = () => {
     description: "",
     category: "",
     code: "",
+    subcategory: "",
   });
   const navigate = useNavigate();
   const [image, setImage] = useState(null);
@@ -33,6 +34,7 @@ const AddProduct = () => {
     formData.append("description", product.description);
     formData.append("category", product.category);
     formData.append("code", product.code);
+    formData.append("subcategory", product.subcategory); // added field
     if (image) {
       formData.append("image", image);
     }
@@ -124,6 +126,24 @@ const AddProduct = () => {
               <option value="Bracelet">Bracelet</option>
               <option value="Earring">Earring</option>
               <option value="Necklace">Necklace</option>
+              <option value="Pendant">Pendant</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-gray-700 font-medium">
+              Subcategory
+            </label>
+            <select
+              name="subcategory"
+              value={product.subcategory}
+              onChange={handleChange}
+              className="w-full mt-1 p-2 border border-gray-300 rounded focus:outline-none"
+              required
+            >
+              <option value="">Select subcategory</option>
+              <option value="With Gemstone">With Gemstone</option>
+              <option value="Without Gemstone">Without Gemstone</option>
             </select>
           </div>
 
