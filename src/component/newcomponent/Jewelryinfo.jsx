@@ -22,7 +22,7 @@ const Jewelryinfo = () => {
           </p>
         </div>
       ),
-      image: "/puramentestore.jpeg",
+      image: "/whypuramente.jpg",
     },
     welcome: {
       title: "Welcome to Your Jewelry Journey",
@@ -87,7 +87,7 @@ const Jewelryinfo = () => {
           </div>
         </div>
       ),
-      image: "/material.png",
+      image: "/boutique.jpg",
     },
     global: {
       title: "Our Global Network",
@@ -201,7 +201,7 @@ const Jewelryinfo = () => {
             <img
               src={sections[activeSection].image}
               alt={sections[activeSection].title}
-              className="w-full pt-5 h-48 sm:h-64 md:h-72 lg:h-96 rounded-lg shadow-md mb-4 sm:mb-6 object-cover"
+              className="w-full pt-5 h-48 sm:h-64 md:h-72 lg:h-96 rounded-lg shadow-md mb-4 sm:mb-6 object-contain"
             />
           )}
         </main>

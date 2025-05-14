@@ -35,7 +35,7 @@ export default function Aboutus() {
           </p>
         </div>
         <div className="lg:w-1/2 flex items-center h-screen w-full">
-          <img className="h-full w-full" src="/puramentestore.jpeg" alt="" />
+          <img className="h-full object-contain w-full" src="/aboutus.jpg" alt="" />
         </div>
       </div>
 
