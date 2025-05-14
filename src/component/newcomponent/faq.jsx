@@ -47,9 +47,7 @@ function Faqsection() {
     faq.question.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-cyan-100 to-white flex items-center justify-center py-6 px-4 sm:py-8 sm:px-6 md:py-10 md:px-8 lg:py-12 lg:px-10 overflow-hidden relative">
@@ -135,13 +133,7 @@ function Faqsection() {
               Contact our support team
             </a>
           </p>
-          <button
-            onClick={scrollToTop}
-            className="mt-4 px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            aria-label="Back to top"
-          >
-            Back to Top
-          </button>
+         
         </div>
       </div>
     </div>

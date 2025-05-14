@@ -12,14 +12,14 @@ AOS.init();
 export default function Aboutus() {
   const { t } = useTranslation(); // Initialize translation
   return (
-    <div >
+    <div className="bg-cyan-200" >
       {/* WHY ARAWALI JEWELLERS SECTION */}
       <div className="h-screen w-full flex flex-col lg:mt-0 lg:flex-row">
         <div className="w-full lg:w-1/2 py-10 flex flex-col justify-center lg:m-10 items-center">
           <h1 className="text-2xl font-bold text-black">
             {t("Why Puramente International")}
           </h1>
-          <p className="m-8 mb-0 font-serif leading-8 font-semibold text-gray-700">
+          <p className="m-8 mb-0 text-center font-serif leading-8 font-semibold text-gray-700">
             Best among all customized gemstone jewelry manufacturers in India.
             Since 2005, Puramente International has been providing one-stop
             services to jewelry professionals & brands worldwide. Our clients
@@ -27,7 +27,7 @@ export default function Aboutus() {
             luxury high street boutiques to online retailers capitalizing on the
             latest trends.
           </p>
-          <p className="m-8 lg:flex hidden font-serif leading-8 font-semibold text-gray-700">
+          <p className="m-8 text-center lg:flex hidden font-serif leading-8 font-semibold text-gray-700">
             We are proud to have worked with some of the biggest names in the
             jewelry industry in India and outside of india as well. We are proud
             on us to be the best among all customized gemstone jewelry
@@ -47,12 +47,12 @@ export default function Aboutus() {
       >
         <div className="w-full lg:w-1/2 flex flex-col justify-center lg:m-10 items-center">
           <h1 className="text-2xl font-bold text-black">{t("OUR STORY")}</h1>
-          <p className="m-8 mb-0 font-serif leading-8 font-semibold text-gray-700">
+          <p className="m-8 mb-0 text-center font-serif leading-8 font-semibold text-gray-700">
             {t(
               "Nestled in the heart of exquisite craftsmanship, Puramente International is a testament to tradition, elegance, and timeless beauty. Our journey began with a passion for fine jewelry and a commitment to offering pieces that blend artistry with luxury. With years of dedication, we have grown into a trusted name in the world of jewelry, known for our impeccable designs, premium quality, and exceptional service."
             )}
           </p>
-          <p className="m-8 lg:flex hidden font-serif leading-8 font-semibold text-gray-700">
+          <p className="m-8 lg:flex text-center hidden font-serif leading-8 font-semibold text-gray-700">
             {t(
               "We take pride in our craftsmanship, sourcing only the finest materials and working with skilled artisans to bring our designs to life. Whether you're looking for a statement piece for a special occasion or a timeless treasure to cherish forever"
             )}
@@ -67,7 +67,6 @@ export default function Aboutus() {
         </div>
       </div>
       <VisitJaipur/>
-      
       <InfoFairTrade/>
       <FairTradePrinciples />
       <VideoSection />

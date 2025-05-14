@@ -1,11 +1,12 @@
-import { Mail, PhoneCall } from "lucide-react";
+import { LocateIcon, Mail, MapPin, PhoneCall } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "axios"
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import BaseURL from "../../baseurl";
 import Select from "react-select";
 import { FlagIcon } from "react-flag-kit"; // Alternative to react-country-flag
+import { FaLocationArrow } from "react-icons/fa6";
 
 const countryOptions = [
   { value: "US", label: "United States", flag: "US" },
@@ -62,7 +63,6 @@ export default function Contactus() {
 
   const [showPopup, setShowPopup] = useState(false);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -289,10 +289,7 @@ export default function Contactus() {
                 <p className="text-gray-600 font-medium text-lg">
                   +91 9314 346 148
                 </p>
-              </div>
-
-              <div className="bg-white lg:h-96 rounded-2xl shadow-xl p-8 flex flex-col justify-center items-center">
-                <div className="p-4 bg-gray-100 rounded-full mb-4">
+                <div className="p-4 mt-8 bg-gray-100 rounded-full mb-4">
                   <Mail className="w-12 h-12 text-gray-700" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -318,15 +315,19 @@ export default function Contactus() {
         </div>
         <div className="lg:w-1/2 flex items-center flex-col">
           <h1 className="text-3xl text-black font-bold">
-            {t("offline_store")}
+            Visit Our Store
           </h1>
-          <p className="m-12 text-xl font-semibold text-black">
-            {t("store_address")}
+        
+          
+          <p className="m-12 flex flex-col justify-center items-center gap-4 text-center text-xl font-semibold text-black">
+              <h1><MapPin size={40}/></h1>
+
+            Puramente International, Building No. 607, Ram Bhawan, Vidhyadhar Ka Rasta, Johri Bazar, Jaipur - 302003
           </p>
-          <p className="lg:text-xl font-semibold text-black">
+          <p className="lg:text-xl text-center font-semibold text-black">
             {t("phone")}: 1414911855, +91 7023555055
           </p>
-          <p className="lg:text-xl font-semibold text-black">{t("timings")}</p>
+          <p className="lg:text-xl text-center font-semibold text-black">{t("timings")}</p>
         </div>
       </div>
     </div>

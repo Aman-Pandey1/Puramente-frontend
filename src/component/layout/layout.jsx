@@ -9,6 +9,7 @@ import Loader from "../loader/loader";
 const Layout = ({ children }) => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
+   
 
   useEffect(() => {
     setLoading(true);

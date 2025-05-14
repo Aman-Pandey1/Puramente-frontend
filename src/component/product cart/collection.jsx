@@ -22,7 +22,7 @@ export default function Collection() {
         <h1 className="text-3xl sm:text-4xl m-6 sm:m-10 font-bold text-center">
           {t("Categories")}
         </h1>
-        <div className="w-full text-center grid grid-cols-2 gap-4 sm:grid-cols-2  xl:grid-cols-5  justify-items-center">
+        <div className="w-full text-center grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3  xl:grid-cols-5  justify-items-center">
           {categories.map((item, index) => (
             <div
               key={index}

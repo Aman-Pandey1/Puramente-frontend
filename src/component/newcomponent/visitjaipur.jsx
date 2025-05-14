@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const VisitJaipur = () => {
   return (
-    <div className="bg-cyan-50 min-h-screen py-10 px-5 md:px-20">
+    <div className="bg-cyan-100 min-h-screen py-10 px-5 md:px-20">
       <motion.h1 
         className="text-4xl md:text-5xl font-bold text-cyan-800 text-center mb-6"
         initial={{ opacity: 0, y: -20 }}
