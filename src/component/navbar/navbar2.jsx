@@ -9,11 +9,46 @@ import { ChevronDown } from "lucide-react";
 
 export default function Navbar2() {
   const categories = [
-    { name: "Necklace", category: "Necklaces" },
-    { name: "Earring", category: "Earrings" },
-    { name: "Bracelet", category: "Bracelets" },
-    { name: "Ring", category: "Rings" },
-    { name: "Pendant", category: "Pendant" },
+    {
+      name: "Necklace",
+      category: "Necklaces",
+      subcategories: [
+        { name: "With Gemstone", path: "with-gemstone" },
+        { name: "Without Gemstone", path: "without-gemstone" },
+      ],
+    },
+    {
+      name: "Earring",
+      category: "Earrings",
+      subcategories: [
+        { name: "With Gemstone", path: "with-gemstone" },
+        { name: "Without Gemstone", path: "without-gemstone" },
+      ],
+    },
+    {
+      name: "Bracelet",
+      category: "Bracelets",
+      subcategories: [
+        { name: "With Gemstone", path: "with-gemstone" },
+        { name: "Without Gemstone", path: "without-gemstone" },
+      ],
+    },
+    {
+      name: "Ring",
+      category: "Rings",
+      subcategories: [
+        { name: "With Gemstone", path: "with-gemstone" },
+        { name: "Without Gemstone", path: "without-gemstone" },
+      ],
+    },
+    {
+      name: "Pendant",
+      category: "Pendant",
+      subcategories: [
+        { name: "With Gemstone", path: "with-gemstone" },
+        { name: "Without Gemstone", path: "without-gemstone" },
+      ],
+    },
   ];
 
   const [dropdown, setDropdown] = useState(false);
@@ -38,29 +73,36 @@ export default function Navbar2() {
             {t("About us")}
           </Link>
 
-          {/* Jewellery Design Dropdown */}
           <div className="relative" onMouseEnter={() => setDropdown(true)}>
-            <Link
-              className="hover:text-cyan-600 flex items-center cursor-pointer"
-            >
+            <div className="hover:text-cyan-600 flex items-center cursor-pointer">
               Jewellery Design
               <ChevronDown />
-            </Link>
+            </div>
             {dropdown && (
               <ul
-                onMouseLeave={() => {
-                  setDropdown(false);
-                }}
-                className="absolute z-50 left-0 mt-2 w-48 bg-white shadow-lg rounded-md"
+                onMouseLeave={() => setDropdown(false)}
+                className="absolute z-50 left-0 mt-2 w-56 bg-white shadow-lg rounded-md"
               >
                 {categories.map((item) => (
-                  <li key={item.category}>
-                    <Link
-                      to={`/category/${item.category}`}
-                      className="block px-4 py-2 hover:bg-cyan-100 text-black"
-                    >
+                  <li key={item.category} className="relative group">
+                    <div className="px-4 py-2 hover:bg-cyan-100 text-black cursor-pointer flex justify-between items-center">
                       {item.name}
-                    </Link>
+                      <ChevronDown className="w-4 h-4 ml-1" />
+                    </div>
+
+                    {/* Subcategories */}
+                    <ul className="absolute top-0 left-full ml-1 hidden group-hover:block bg-white border shadow-lg rounded-md w-56 z-50">
+                      {item.subcategories.map((sub) => (
+                        <li key={sub.path}>
+                          <Link
+                            to={`/category/${item.category}/${sub.path}`}
+                            className="block px-4 py-2 hover:bg-cyan-100 text-black"
+                          >
+                            {sub.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
                   </li>
                 ))}
               </ul>
