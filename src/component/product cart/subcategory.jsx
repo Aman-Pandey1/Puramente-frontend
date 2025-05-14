@@ -13,7 +13,6 @@ export default function SubCategoryPage() {
   const [addedProducts, setAddedProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
   const { addToCart, removeFromCart, updateQuantity } = useCart();
-    
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -75,7 +74,10 @@ export default function SubCategoryPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold text-center capitalize mb-6">
-        {category} - {subcategory}
+        {category} -{" "}
+        {subcategory
+          .replace("withgemstone", "with gemstone")
+          .replace("withoutgemstone", "without gemstone")}
       </h1>
 
       {loading && <p className="text-center">Loading...</p>}
@@ -85,7 +87,9 @@ export default function SubCategoryPage() {
         <div className="flex justify-center items-center h-64">
           <div className="text-center text-gray-500">
             <h2 className="text-xl font-semibold mb-2">No Products Found</h2>
-            <p className="text-sm">We couldn't find any products in this subcategory.</p>
+            <p className="text-sm">
+              We couldn't find any products in this subcategory.
+            </p>
           </div>
         </div>
       )}
@@ -118,7 +122,8 @@ export default function SubCategoryPage() {
                 </h3>
                 <p className="text-sm text-cyan-600 mt-1">{product.category}</p>
                 <p className="text-xs text-cyan-500 mt-2 font-medium">
-                  Design Code: <span className="font-semibold">{product.code}</span>
+                  Design Code:{" "}
+                  <span className="font-semibold">{product.code}</span>
                 </p>
 
                 {addedProducts.includes(product._id) ? (
@@ -138,7 +143,10 @@ export default function SubCategoryPage() {
                         onChange={(e) => {
                           const val = parseInt(e.target.value);
                           if (!isNaN(val) && val >= 1) {
-                            setQuantities((prev) => ({ ...prev, [product._id]: val }));
+                            setQuantities((prev) => ({
+                              ...prev,
+                              [product._id]: val,
+                            }));
                             updateQuantity(product._id, val);
                           }
                         }}
