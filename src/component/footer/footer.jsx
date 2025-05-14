@@ -17,11 +17,11 @@ export default function Footer() {
 
             <div className="mt-4 flex flex-col text-sm gap-2 text-white">
               <p className="hover:text-cyan-500">
-                📍 Address: 205A, Anand Prime, Haldighati Marg, Jaipur
+                📍 Address: 83/1 Ground Floor, Chetak Marg, Sector 8, Pratap Nagar, Jaipur-302033
               </p>
               <p className="hover:text-cyan-500">📞 Phone: +91 9314 346 148</p>
               <p className="hover:text-cyan-500">
-                ✉ Email: info@puramenteinternational.com
+                ✉ Email: info@puramentejewel.com
               </p>
             </div>
 
@@ -83,6 +83,7 @@ export default function Footer() {
             <Link to="/faq">
               <button className="hover:text-cyan-500">FAQ</button>
             </Link>
+             <Link to="/blog">Blog</Link>
           </div>
 
           <div className="flex w-1/4 flex-col h-36 ml-10 mt-8 gap-2 items-start">
@@ -97,6 +98,12 @@ export default function Footer() {
             </Link>
             <Link to={`/category/Bracelet`} className="hover:text-cyan-500">
               <button className="hover:text-cyan-500">{t("Bracelet")}</button>
+            </Link>
+            <Link to="/category/Rings">
+            Rings
+            </Link>
+            <Link to="/category/Pendant">
+            Pendant
             </Link>
           </div>
         </div>
@@ -144,6 +151,7 @@ export default function Footer() {
             <Link to="/contactus" className="hover:text-cyan-500">
               {t("Contact us")}
             </Link>
+            <Link to="/blog">Blog</Link>
           </div>
           <div className="flex w-1/2 flex-col items-center text-sm gap-2">
             <button className=" text-cyan-500 hover:text-cyan-500">

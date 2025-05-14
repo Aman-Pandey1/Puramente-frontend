@@ -80,7 +80,8 @@ const ProductCard = () => {
           Our Latest Collection
         </h1>
         <p className="text-lg font-medium text-cyan-800 mt-2 italic max-w-2xl mx-auto">
-          “Exquisite craftsmanship meets timeless elegance – shop our stunning jewelry collection today!”
+          “Exquisite craftsmanship meets timeless elegance – shop our stunning
+          jewelry collection today!”
         </p>
       </div>
 
@@ -126,15 +127,28 @@ const ProductCard = () => {
               {addedProducts.includes(product._id) ? (
                 <>
                   <div className="mt-4 flex justify-center items-center gap-2">
+                    {/* Quantity Input Field */}
+                  
                     <button
                       onClick={() => decrementQuantity(product._id)}
                       className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
                     >
                       -
                     </button>
-                    <span className="font-semibold text-cyan-700">
-                      {quantities[product._id] || 1}
-                    </span>
+                      <input
+                      type="number"
+                      value={quantities[product._id] || 1}
+                      min="1"
+                      onChange={(e) => {
+                        const newQty = Math.max(Number(e.target.value), 1); // Ensure quantity doesn't go below 1
+                        setQuantities((prev) => ({
+                          ...prev,
+                          [product._id]: newQty,
+                        }));
+                        updateQuantity(product._id, newQty);
+                      }}
+                      className="w-16 text-center py-1 px-2 border border-cyan-600 rounded-md"
+                    />
                     <button
                       onClick={() => incrementQuantity(product._id)}
                       className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"

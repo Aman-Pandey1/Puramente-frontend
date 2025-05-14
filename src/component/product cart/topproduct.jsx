@@ -13,7 +13,7 @@ export default function TopProduct() {
   const [addedProducts, setAddedProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
 
-  const { addToCart, removeFromCart, updateQuantity } = useCart(); // Make sure removeFromCart exists in your context
+  const { addToCart, removeFromCart, updateQuantity } = useCart();
 
   useEffect(() => {
     AOS.init({ duration: 1000, once: true, easing: "ease-out-cubic" });
@@ -66,7 +66,7 @@ export default function TopProduct() {
   const handleIncrease = (product) => {
     setQuantities((prev) => {
       const newQuantity = (prev[product._id] || 1) + 1;
-      updateQuantity(product._id, newQuantity); // Update quantity in cart context
+      updateQuantity(product._id, newQuantity);
       return {
         ...prev,
         [product._id]: newQuantity,
@@ -77,12 +77,21 @@ export default function TopProduct() {
   const handleDecrease = (product) => {
     setQuantities((prev) => {
       const newQuantity = Math.max(1, (prev[product._id] || 1) - 1);
-      updateQuantity(product._id, newQuantity); // Update quantity in cart context
+      updateQuantity(product._id, newQuantity);
       return {
         ...prev,
         [product._id]: newQuantity,
       };
     });
+  };
+
+  const handleManualQuantityChange = (e, product) => {
+    const value = Math.max(1, Number(e.target.value));
+    setQuantities((prev) => ({
+      ...prev,
+      [product._id]: value,
+    }));
+    updateQuantity(product._id, value);
   };
 
   return (
@@ -100,9 +109,7 @@ export default function TopProduct() {
             onClick={scrollLeft}
             disabled={startIndex === 0}
             className={`absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 bg-cyan-600 text-white p-3 rounded-full shadow-lg z-10 transition ${
-              startIndex === 0
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-cyan-700"
+              startIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-cyan-700"
             }`}
           >
             ◀
@@ -111,7 +118,7 @@ export default function TopProduct() {
           <div className="flex space-x-4 md:space-x-6 overflow-hidden w-full justify-center p-4">
             {products
               .slice(startIndex, startIndex + itemsPerPage)
-              .reverse() // Reverse the array to show products from the last
+              .reverse()
               .map((product, index) => {
                 const isAdded = addedProducts.includes(product._id);
                 const quantity = quantities[product._id] || 1;
@@ -153,35 +160,34 @@ export default function TopProduct() {
                         </p>
                       </Link>
 
-                    <div className="flex items-center justify-center gap-2 mt-4">
-  {isAdded && (
-    <div className="flex items-center gap-2">
-      <button
-        onClick={() => handleDecrease(product)}
-        className="bg-cyan-600 text-white px-2 py-1 rounded-md hover:bg-cyan-700"
-      >
-        −
-      </button>
-      <span className="font-bold text-lg">
-        {quantity}
-      </span>
-      <button
-        onClick={() => handleIncrease(product)}
-        className="bg-cyan-600 text-white px-2 py-1 rounded-md hover:bg-cyan-700"
-      >
-        +
-      </button>
-    </div>
-  )}
-</div>
-
+                      {isAdded && (
+                        <div className="flex items-center justify-center gap-2 mt-4">
+                          <button
+                            onClick={() => handleDecrease(product)}
+                            className="bg-cyan-600 text-white px-2 py-1 rounded-md hover:bg-cyan-700"
+                          >
+                            −
+                          </button>
+                          <input
+                            type="number"
+                            min="1"
+                            value={quantity}
+                            onChange={(e) => handleManualQuantityChange(e, product)}
+                            className="w-16 text-center border border-cyan-600 rounded-md py-1 px-2"
+                          />
+                          <button
+                            onClick={() => handleIncrease(product)}
+                            className="bg-cyan-600 text-white px-2 py-1 rounded-md hover:bg-cyan-700"
+                          >
+                            +
+                          </button>
+                        </div>
+                      )}
 
                       <button
                         onClick={() => handleToggleCart(product)}
                         className={`mt-4 w-full ${
-                          isAdded
-                            ? "bg-cyan-700 hover:bg-cyan-800"
-                            : "bg-cyan-500 hover:bg-cyan-600"
+                          isAdded ? "bg-cyan-700 hover:bg-cyan-800" : "bg-cyan-500 hover:bg-cyan-600"
                         } text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
                       >
                         {isAdded ? "Remove Item" : "Add To List"}
