@@ -12,7 +12,7 @@ AOS.init();
 export default function Aboutus() {
   const { t } = useTranslation(); // Initialize translation
   return (
-    <div className="bg-cyan-200" >
+    <div className="bg-cyan-200">
       {/* WHY ARAWALI JEWELLERS SECTION */}
       <div className="h-screen w-full flex flex-col lg:mt-0 lg:flex-row">
         <div className="w-full lg:w-1/2 py-10 flex flex-col justify-center lg:m-10 items-center">
@@ -35,7 +35,11 @@ export default function Aboutus() {
           </p>
         </div>
         <div className="lg:w-1/2 flex items-center h-screen w-full">
-          <img className="h-full object-contain w-full" src="/aboutus.jpg" alt="" />
+          <img
+            className="h-full object-contain w-full"
+            src="/aboutus.jpg"
+            alt=""
+          />
         </div>
       </div>
 
@@ -66,12 +70,11 @@ export default function Aboutus() {
           />
         </div>
       </div>
-      <VisitJaipur/>
-      <InfoFairTrade/>
+      <VisitJaipur />
+      <InfoFairTrade />
       <FairTradePrinciples />
       <VideoSection />
       <HelpSection />
-     
     </div>
   );
 }
