@@ -3,36 +3,32 @@ import { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  // Load cart from session storage or initialize as an empty array
   const [cartItems, setCartItems] = useState(() => {
     const savedCart = sessionStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
-  // Update session storage whenever cartItems change
   useEffect(() => {
     sessionStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   const addToCart = (product) => {
+    const qty = product.quantity || 1;
     setCartItems((prevCart) => {
       const existingItem = prevCart.find((item) => item._id === product._id);
-
       if (existingItem) {
         return prevCart.map((item) =>
           item._id === product._id
-            ? { ...item, quantity: Math.max(1, item.quantity + 1) } // Ensure min 50
+            ? { ...item, quantity: Math.max(1, item.quantity + qty) }
             : item
         );
       }
-
-      return [...prevCart, { ...product, quantity: 1 }]; // Set min 50 for new item
+      return [...prevCart, { ...product, quantity: qty }];
     });
   };
 
   const updateQuantity = (_id, quantity) => {
-    const newQuantity = Math.max(1, quantity); // Ensure minimum 50
-
+    const newQuantity = Math.max(1, quantity);
     setCartItems((prevCart) =>
       prevCart.map((item) =>
         item._id === _id ? { ...item, quantity: newQuantity } : item
@@ -42,14 +38,12 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = (_id) => {
     setCartItems((prevCart) => prevCart.filter((item) => item._id !== _id));
-
-    // Also remove from session storage
-    const updatedCart = cartItems.filter((item) => item._id !== _id);
-    sessionStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, updateQuantity, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, updateQuantity, removeFromCart }}
+    >
       {children}
     </CartContext.Provider>
   );

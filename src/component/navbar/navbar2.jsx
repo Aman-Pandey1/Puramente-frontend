@@ -41,7 +41,6 @@ export default function Navbar2() {
           {/* Jewellery Design Dropdown */}
           <div className="relative" onMouseEnter={() => setDropdown(true)}>
             <Link
-             
               className="hover:text-cyan-600 flex items-center cursor-pointer"
             >
               Jewellery Design

@@ -12,8 +12,9 @@ const ProductCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addToCart } = useCart();
-  const [addedProducts, setAddedProducts] = useState([]); // ✅ Track added products
+  const { addToCart, updateQuantity, removeFromCart } = useCart();
+  const [addedProducts, setAddedProducts] = useState([]);
+  const [quantities, setQuantities] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 16;
   const productListRef = useRef(null);
@@ -23,7 +24,6 @@ const ProductCard = () => {
       try {
         const response = await axios.get(`${BaseURL}/api/products`);
         setProducts(response.data);
-        setCurrentPage(1);
       } catch (err) {
         setError("Failed to load products.");
       } finally {
@@ -32,11 +32,43 @@ const ProductCard = () => {
     };
 
     fetchProducts();
+
+    const savedCart = sessionStorage.getItem("cart");
+    const parsedCart = savedCart ? JSON.parse(savedCart) : [];
+    setAddedProducts(parsedCart.map((item) => item._id));
+
+    const initialQuantities = {};
+    parsedCart.forEach((item) => {
+      initialQuantities[item._id] = item.quantity || 1;
+    });
+    setQuantities(initialQuantities);
   }, []);
 
   const handleAddToCart = (product) => {
     addToCart(product);
-    setAddedProducts((prevAdded) => [...prevAdded, product._id]);
+    setAddedProducts((prev) => [...prev, product._id]);
+    setQuantities((prev) => ({ ...prev, [product._id]: 1 }));
+  };
+
+  const handleRemoveFromCart = (_id) => {
+    removeFromCart(_id);
+    setAddedProducts((prev) => prev.filter((id) => id !== _id));
+    setQuantities((prev) => {
+      const { [_id]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const incrementQuantity = (_id) => {
+    const newQty = (quantities[_id] || 1) + 1;
+    setQuantities((prev) => ({ ...prev, [_id]: newQty }));
+    updateQuantity(_id, newQty);
+  };
+
+  const decrementQuantity = (_id) => {
+    const newQty = Math.max((quantities[_id] || 1) - 1, 1);
+    setQuantities((prev) => ({ ...prev, [_id]: newQty }));
+    updateQuantity(_id, newQty);
   };
 
   const totalPages = Math.ceil(products.length / productsPerPage);
@@ -87,18 +119,45 @@ const ProductCard = () => {
 
             <div className="mt-6 text-center">
               <Link to={`/singleproduct/${product._id}`}>
-                <h3 className="text-xl line-clamp-1 font-bold text-cyan-800 tracking-tight">
-                  {product.name}
-                </h3>
+                <h3 className="text-xl line-clamp-1 font-bold text-cyan-800 tracking-tight">{product.name}</h3>
                 <p className="text-sm text-cyan-600 mt-1">{product.category}</p>
                 <p className="text-xs text-cyan-500 mt-2 font-medium">Design Code: {product.code}</p>
               </Link>
-              <button
-                onClick={() => handleAddToCart(product)}
-                className="mt-4 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
-              >
-                {addedProducts.includes(product._id) ? "Product Added! ✅" : "Add To List"}
-              </button>
+
+              {addedProducts.includes(product._id) ? (
+                <>
+                  <div className="mt-4 flex justify-center items-center gap-2">
+                    <button
+                      onClick={() => decrementQuantity(product._id)}
+                      className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
+                    >
+                      -
+                    </button>
+                    <span className="font-semibold text-cyan-700">
+                      {quantities[product._id] || 1}
+                    </span>
+                    <button
+                      onClick={() => incrementQuantity(product._id)}
+                      className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveFromCart(product._id)}
+                    className="mt-2 w-full bg-cyan-500 text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Remove Item
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  className="mt-4 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                >
+                  Add To List
+                </button>
+              )}
             </div>
           </div>
         ))}
@@ -115,7 +174,6 @@ const ProductCard = () => {
               Previous
             </button>
           )}
-
           {[...Array(totalPages)].map((_, i) => (
             <button
               key={i}
@@ -127,7 +185,6 @@ const ProductCard = () => {
               {i + 1}
             </button>
           ))}
-
           {currentPage < totalPages && (
             <button
               onClick={() => handlePageChange(currentPage + 1)}

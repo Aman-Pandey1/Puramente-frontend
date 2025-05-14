@@ -12,9 +12,10 @@ const ProductCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { addToCart, removeFromCart } = useCart();
+  const { addToCart, updateQuantity, removeFromCart } = useCart();
   const [addedProducts, setAddedProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState(8);
+  const [quantities, setQuantities] = useState({});
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,20 +31,42 @@ const ProductCard = () => {
 
     fetchProducts();
 
-    // Sync addedProducts with sessionStorage cart
     const savedCart = sessionStorage.getItem("cart");
     const parsedCart = savedCart ? JSON.parse(savedCart) : [];
     setAddedProducts(parsedCart.map((item) => item._id));
+
+    const initialQuantities = {};
+    parsedCart.forEach((item) => {
+      initialQuantities[item._id] = item.quantity || 1;
+    });
+    setQuantities(initialQuantities);
   }, []);
 
   const handleAddToCart = (product) => {
     addToCart(product);
     setAddedProducts((prev) => [...prev, product._id]);
+    setQuantities((prev) => ({ ...prev, [product._id]: 1 }));
   };
 
   const handleRemoveFromCart = (_id) => {
     removeFromCart(_id);
     setAddedProducts((prev) => prev.filter((id) => id !== _id));
+    setQuantities((prev) => {
+      const { [_id]: _, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  const incrementQuantity = (_id) => {
+    const newQty = (quantities[_id] || 1) + 1;
+    setQuantities((prev) => ({ ...prev, [_id]: newQty }));
+    updateQuantity(_id, newQty);
+  };
+
+  const decrementQuantity = (_id) => {
+    const newQty = Math.max((quantities[_id] || 1) - 1, 1);
+    setQuantities((prev) => ({ ...prev, [_id]: newQty }));
+    updateQuantity(_id, newQty);
   };
 
   return (
@@ -66,7 +89,7 @@ const ProductCard = () => {
           Loading products...
         </p>
       )}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {error && <p className="text-center text-cyan-500">{error}</p>}
 
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
         {products.slice(0, visibleProducts).map((product) => (
@@ -101,12 +124,31 @@ const ProductCard = () => {
               </Link>
 
               {addedProducts.includes(product._id) ? (
-                <button
-                  onClick={() => handleRemoveFromCart(product._id)}
-                  className="mt-4 w-full bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-800 transition-all duration-300 transform hover:scale-105"
-                >
-                  Remove from List ❌
-                </button>
+                <>
+                  <div className="mt-4 flex justify-center items-center gap-2">
+                    <button
+                      onClick={() => decrementQuantity(product._id)}
+                      className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
+                    >
+                      -
+                    </button>
+                    <span className="font-semibold text-cyan-700">
+                      {quantities[product._id] || 1}
+                    </span>
+                    <button
+                      onClick={() => incrementQuantity(product._id)}
+                      className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
+                    >
+                      +
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveFromCart(product._id)}
+                    className="mt-2 w-full bg-cyan-500 text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                  >
+                    Remove Item
+                  </button>
+                </>
               ) : (
                 <button
                   onClick={() => handleAddToCart(product)}

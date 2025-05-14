@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { useCart } from "../newcomponent/cartcontext";
 
 export default function CategoryPage() {
-  const { category } = useParams(); // Get category from URL
+  const { category } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [addedProducts, setAddedProducts] = useState([]); // <-- plural for multiple products
-  const { addToCart, removeFromCart } = useCart();
+  const [addedProducts, setAddedProducts] = useState([]);
+  const [quantities, setQuantities] = useState({});
+  const { addToCart, removeFromCart, updateQuantity } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,16 +34,39 @@ export default function CategoryPage() {
     const savedCart = sessionStorage.getItem("cart");
     const parsedCart = savedCart ? JSON.parse(savedCart) : [];
     setAddedProducts(parsedCart.map((item) => item._id));
+    const qtyMap = {};
+    parsedCart.forEach((item) => {
+      qtyMap[item._id] = item.quantity || 1;
+    });
+    setQuantities(qtyMap);
   }, [category]);
 
   const handleAddToCart = (product) => {
     addToCart(product);
     setAddedProducts((prev) => [...prev, product._id]);
+    setQuantities((prev) => ({ ...prev, [product._id]: 1 }));
   };
 
   const handleRemoveFromCart = (_id) => {
     removeFromCart(_id);
     setAddedProducts((prev) => prev.filter((id) => id !== _id));
+    setQuantities((prev) => {
+      const copy = { ...prev };
+      delete copy[_id];
+      return copy;
+    });
+  };
+
+  const incrementQuantity = (_id) => {
+    const newQty = (quantities[_id] || 1) + 1;
+    setQuantities((prev) => ({ ...prev, [_id]: newQty }));
+    updateQuantity(_id, newQty);
+  };
+
+  const decrementQuantity = (_id) => {
+    const newQty = Math.max(1, (quantities[_id] || 1) - 1);
+    setQuantities((prev) => ({ ...prev, [_id]: newQty }));
+    updateQuantity(_id, newQty);
   };
 
   return (
@@ -88,12 +112,44 @@ export default function CategoryPage() {
                 </p>
 
                 {addedProducts.includes(product._id) ? (
-                  <button
-                    onClick={() => handleRemoveFromCart(product._id)}
-                    className="mt-4 w-full bg-cyan-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-800 transition-all duration-300 transform hover:scale-105"
-                  >
-                    Remove from List ❌
-                  </button>
+                  <>
+                    <div className="mt-4 flex justify-center items-center gap-2">
+                      <button
+                        onClick={() => decrementQuantity(product._id)}
+                        className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
+                      >
+                        -
+                      </button>
+
+                      <input
+                        type="number"
+                        min="1"
+                        value={quantities[product._id] || 1}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value);
+                          if (!isNaN(val) && val >= 1) {
+                            setQuantities((prev) => ({ ...prev, [product._id]: val }));
+                            updateQuantity(product._id, val);
+                          }
+                        }}
+                        className="w-12 text-center border border-cyan-300 rounded-md text-cyan-800 font-semibold"
+                      />
+
+                      <button
+                        onClick={() => incrementQuantity(product._id)}
+                        className="bg-cyan-600 text-white px-3 py-1 rounded-full shadow hover:bg-cyan-700"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <button
+                      onClick={() => handleRemoveFromCart(product._id)}
+                      className="mt-2 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                    >
+                      Remove Item
+                    </button>
+                  </>
                 ) : (
                   <button
                     onClick={() => handleAddToCart(product)}
