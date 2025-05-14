@@ -109,7 +109,7 @@ export default function TopProduct() {
             onClick={scrollLeft}
             disabled={startIndex === 0}
             className={`absolute left-2 md:left-0 top-1/2 transform -translate-y-1/2 bg-cyan-600 text-white p-3 rounded-full shadow-lg z-10 transition ${
-              startIndex === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-cyan-700"
+              startIndex === 0 ? " hidden opacity-50 cursor-not-allowed" : "hover:bg-cyan-700"
             }`}
           >
             ◀
