@@ -23,6 +23,12 @@ import VisitJaipur from "./component/newcomponent/visitjaipur";
 import Categorycart from "./component/product cart/categorycart";
 import ExcelUploader from "./component/admin/component/exceluploader";
 import PrivacyPolicy from "./component/newcomponent/privacy";
+import ShowBlogs from "./component/button/Blogs/blogs";
+import BlogDetails from "./component/button/Blogs/BlogDetails";
+import AdminBlogList from "./component/admin/component/AdminBlogList";
+import BlogUpload from "./component/admin/component/BlogUpload";
+import EditBlog from "./component/admin/component/Editblog";
+
 function App() {
   return (
     <>
@@ -50,11 +56,16 @@ function App() {
               <Route path="/orderlist" element={<OrderList />}></Route>
               <Route path="/productlist" element={<AdminProductList />}></Route>
               <Route path="/singleproduct" element={<SingleProduct />}></Route>
-              <Route path="/category" element={<Category />}></Route>
+              <Route path="/category" element={<Category/>}></Route>
               <Route path="/fairtrade" element={<Fairtradepage />}></Route>
               <Route path="privacy" element={<PrivacyPolicy />}></Route>
               <Route path="faq" element={<Faqsection />}></Route>
               <Route path="visitjaipur" element={<VisitJaipur />}></Route>
+              <Route path="/uploadblog" element={<BlogUpload/>} />
+              <Route path="/blogs" element={<ShowBlogs/>} />
+              <Route path="/blogs/:id" element={<BlogDetails/>} />
+              <Route path="/blog-list" element={<AdminBlogList/>} />
+              <Route path="/admin/edit-blog/:id" element={<EditBlog/>} />
               <Route
                 path="/category/:category"
                 element={<Categorycart />}

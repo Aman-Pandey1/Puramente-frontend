@@ -91,7 +91,7 @@ export default function Footer() {
             <Link to="/faq">
               <button className="hover:text-cyan-500">FAQ</button>
             </Link>
-             <Link to="/blog">Blog</Link>
+             <Link to="/blogs">Blog</Link>
           </div>
 
           <div className="flex w-1/4 flex-col h-36 ml-10 mt-8 gap-2 items-start">
@@ -160,7 +160,7 @@ export default function Footer() {
             <Link to="/contactus" className="hover:text-cyan-500">
               {t("Contact us")}
             </Link>
-            <Link to="/blog">Blog</Link>
+            <Link to="/blogs">Blog</Link>
           </div>
           <div className="flex w-1/2 flex-col items-center text-sm gap-2">
             <button className=" text-cyan-500 hover:text-cyan-500">

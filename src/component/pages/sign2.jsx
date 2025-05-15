@@ -57,9 +57,13 @@ export default function Signup() {
     if (!credentials.contactNumber) errors.contactNumber = t("contact_required");
     if (!credentials.country) errors.country = t("country_required");
     // Removed validation for companyName and companyWebsite since they are now optional
-    if (credentials.companyWebsite && !/^(ftp|http|https):\/\/[^ "]+$/.test(credentials.companyWebsite)) {
-      errors.companyWebsite = t("invalid_website");
-    }
+if (
+  credentials.companyWebsite &&
+  !/^((https?:\/\/)?(www\.)?)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/\S*)?$/.test(credentials.companyWebsite)
+) {
+  errors.companyWebsite = t("invalid_website");
+}
+
     return errors;
   };
 

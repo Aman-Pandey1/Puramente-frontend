@@ -41,7 +41,7 @@ const Jewelryinfo = () => {
           </p>
         </div>
       ),
-      image: "https://i.postimg.cc/NfD50gHY/IMG-6855.jpg",
+      image: "https://res.cloudinary.com/dqibmkvib/image/upload/v1746783191/3_vtn0ff.jpg",
     },
     custom: {
       title: "Crafting Dreams: Custom Jewelry",
@@ -59,7 +59,7 @@ const Jewelryinfo = () => {
           </p>
         </div>
       ),
-      image: "https://i.postimg.cc/W1mqgMCR/COL0018R.jpg",
+      image: "https://res.cloudinary.com/dqibmkvib/image/upload/v1746782736/WhatsApp_Image_2025-05-09_at_14.01.43_7cf39cfc_gflmui.jpg",
     },
     materials: {
       title: "Unveiling the Sparkle: Our Materials",

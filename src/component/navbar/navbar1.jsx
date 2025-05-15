@@ -72,7 +72,7 @@ export default function Navbar1() {
   return (
     <div>
       {/* Desktop Navbar */}
-      <nav className="w-full hidden lg:flex h-32 items-center bg-background-sky">
+      <nav className="w-full hidden lg:flex h-23 items-center bg-background-sky">
         <Link to="/">
           <img
             className="h-20 w-48 p-2 ml-6"

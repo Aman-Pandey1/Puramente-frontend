@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   File,
   FilePlus,
+  FileText,
   Menu,
   TableProperties,
   TicketPercent,
@@ -30,11 +31,14 @@ export default function Dashboard() {
           <Link to="/userview" className="flex items-center gap-2">
             <UserRoundSearch /> View User
           </Link>
-          {/* <Link to="/productlist" className="flex items-center gap-2">
-            <TableProperties /> Product list
-          </Link> */}
           <Link to="/excelfile" className="flex items-center gap-2">
             <File /> Excel File Upload
+          </Link>
+          <Link to="/uploadblog" className="flex items-center gap-2">
+            <FileText /> Upload Blog
+          </Link>
+              <Link to="/blog-list" className="flex items-center gap-2">
+            <FileText /> Blog List
           </Link>
         </nav>
       </div>
@@ -54,14 +58,17 @@ export default function Dashboard() {
           <Link to="/addproduct" className="flex items-center gap-2">
             <FilePlus /> Add Product
           </Link>
-          {/* <Link to="/orderlist" className="flex items-center gap-2">
-            <View /> View Order
-          </Link> */}
           <Link to="/userview" className="flex items-center gap-2">
             <UserRoundSearch /> View User
           </Link>
           <Link to="/excelfile" className="flex items-center gap-2">
             <File /> Excel File Upload
+          </Link>
+          <Link to="/uploadblog" className="flex items-center gap-2">
+            <FileText /> Upload Blog
+          </Link>
+            <Link to="/blog-list" className="flex items-center gap-2">
+            <FileText /> Blog List
           </Link>
         </div>
       )}
