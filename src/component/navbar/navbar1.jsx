@@ -73,7 +73,7 @@ export default function Navbar1() {
     if (product.imageurl && product.imageurl.startsWith("http")) {
       return product.imageurl;
     }
-    return "/default-placeholder.jpg";
+    return "/default-placeholder.svg";
   };
 
   return (
@@ -89,21 +89,21 @@ export default function Navbar1() {
         </Link>
 
         {/* Search */}
-        <div className="w-[70%] relative">
+        <div className="w-[60%] relative">
           <input
-            className="bg-white h-11 w-[70%] focus:outline-0 ml-8 p-4"
+            className="bg-white h-9 w-[50%] focus:outline-0 ml-4 p-3 text-sm"
             placeholder={t("searchPlaceholder")}
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button className="bg-button-orange -ml-2 relative font-sans text-white h-11 w-36">
+          <button className="bg-button-orange -ml-2 relative font-sans text-white h-9 w-28 text-sm">
             {t("SEARCH")}
           </button>
 
           {/* Search dropdown */}
           {searchTerm.trim() !== "" && (
-            <div className="absolute bg-white shadow-lg w-[70%] ml-8 mt-2 max-h-60 overflow-y-auto z-10">
+            <div className="absolute bg-white shadow-lg w-[50%] ml-4 mt-2 max-h-60 overflow-y-auto z-10">
               {loading ? (
                 <div className="p-2 text-gray-500 text-center">Loading...</div>
               ) : error ? (
@@ -178,6 +178,15 @@ export default function Navbar1() {
             alt="jewellers"
           />
         </Link>
+
+        {/* Mobile search icon */}
+        <button
+          aria-label="Open search"
+          onClick={() => !sidemenu && setsidemenu(true)}
+          className="mr-2"
+        >
+          <img src="/mobilesearch.svg" alt="search" className="h-8 w-8" />
+        </button>
 
         {/* cartbutton */}
         <Link to="/cart" className="relative flex items-center">

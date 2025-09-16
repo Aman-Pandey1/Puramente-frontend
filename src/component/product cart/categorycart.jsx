@@ -101,7 +101,7 @@ export default function CategoryPage() {
     if (product.imageurl && product.imageurl.startsWith("http")) {
       return product.imageurl;
     }
-    return "/default-placeholder.jpg";
+    return "/default-placeholder.svg";
   };
 
   const indexOfLastProduct = currentPage * productsPerPage;
@@ -177,12 +177,12 @@ export default function CategoryPage() {
                 data-aos="zoom-in"
                 data-aos-duration="500"
               >
-                <div className="relative w-full h-36">
+                <div className="relative w-full h-48">
                   <Link to={`/singleproduct/${product._id}`}>
                     <img
                       src={getImageSrc(product)}
                       alt={product.name}
-                      className="w-full object-contain h-full rounded-lg transform hover:scale-105 transition-all duration-500"
+                      className="w-full object-cover h-full rounded-lg transform hover:scale-105 transition-all duration-500"
                     />
                   </Link>
                   <span className="absolute top-3 left-3 bg-cyan-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md animate-pulse">
@@ -191,11 +191,11 @@ export default function CategoryPage() {
                 </div>
 
                 <div className="mt-6 text-center">
-                  <h3 className="text-sm lg:text-xl font-bold text-cyan-800 line-clamp-1 tracking-tight">
+                  <h3 className="text-base lg:text-base font-bold text-cyan-800 line-clamp-1 tracking-tight">
                     {product.name}
                   </h3>
-                  <p className="text-sm text-cyan-600 mt-1">{product.category}</p>
-                  <p className="text-xs text-cyan-500 mt-2 font-medium">
+                  <p className="text-xs text-cyan-600 mt-1">{product.category}</p>
+                  <p className="text-[11px] text-cyan-500 mt-2 font-medium">
                     Design Code: <span className="font-semibold">{product.code}</span>
                   </p>
 
@@ -244,7 +244,7 @@ export default function CategoryPage() {
                   ) : (
                     <button
                       onClick={() => handleAddToCart(product)}
-                      className="mt-4 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                      className="mt-3 w-full bg-cyan-500 text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
                     >
                       Add To List
                     </button>

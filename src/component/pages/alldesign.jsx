@@ -88,7 +88,7 @@ const AllDesigns = () => {
     if (product.imageurl && product.imageurl.startsWith("http")) {
       return product.imageurl;
     }
-    return "/default-placeholder.jpg";
+    return "/default-placeholder.svg";
   };
 
   // ✅ Pagination Logic
