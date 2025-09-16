@@ -1,17 +1,24 @@
-import { useEffect, useState } from "react";
-import { Phone, Share2 } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Phone, Share2, ZoomIn, ZoomOut } from "lucide-react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import BaseURL from "../../baseurl";
 import WhoWeAre from "../newcomponent/woweare";
 import { useCart } from "../newcomponent/cartcontext";
-import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 export default function SingleProduct() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  // For panning:
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const dragging = useRef(false);
+  const lastPos = useRef({ x: 0, y: 0 });
+
   const { id } = useParams();
   const { addToCart, cartItems, removeFromCart } = useCart();
 
@@ -33,6 +40,17 @@ export default function SingleProduct() {
     fetchProduct();
   }, [id]);
 
+  const getImageSrc = (product) => {
+    if (product.cloudinaryId) {
+      // Higher quality image with better resolution
+      return `https://res.cloudinary.com/ddtharbsi/image/upload/c_fill,w_800,h_800,q_auto:best/${product.cloudinaryId}`;
+    }
+    if (product.imageurl && product.imageurl.startsWith("http")) {
+      return product.imageurl;
+    }
+    return "/default-placeholder.jpg";
+  };
+
   const handleAddToCart = () => {
     const productWithQty = { ...product, quantity };
     addToCart(productWithQty);
@@ -42,155 +60,250 @@ export default function SingleProduct() {
     removeFromCart(product._id);
   };
 
-  if (loading) return <div className="text-center py-10">Loading...</div>;
-  if (error) return <div className="text-center py-10 text-red-600">{error}</div>;
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: product.name,
+        text: `Check out this product: ${product.name}`,
+        url: window.location.href,
+      })
+      .then(() => console.log('Shared successfully'))
+      .catch((error) => console.error('Error sharing:', error));
+    } else {
+      alert('Your browser does not support the Share API. Please copy the URL manually.');
+    }
+  };
 
-  const qualityImage = "/productquality.png";
-  const assuranceImage = "/quality.png";
+  // Zoom control
+  const increaseZoom = () => {
+    setZoomLevel(prev => {
+      const next = Math.min(prev + 0.25, 3); // Increased max zoom to 3x
+      if (next === 1) setOffset({ x: 0, y: 0 });
+      else clampOffset(offset, next);
+      return next;
+    });
+  };
+  
+  const decreaseZoom = () => {
+    setZoomLevel(prev => {
+      const next = Math.max(prev - 0.25, 1);
+      if (next === 1) setOffset({ x: 0, y: 0 });
+      else clampOffset(offset, next);
+      return next;
+    });
+  };
+
+  const clampOffset = (offset, zoom) => {
+    const containerSize = 500; // Increased container size
+    const imageSize = containerSize * zoom;
+
+    const maxOffset = (imageSize - containerSize) / 2;
+
+    let x = offset.x;
+    let y = offset.y;
+
+    if (x > maxOffset) x = maxOffset;
+    if (x < -maxOffset) x = -maxOffset;
+    if (y > maxOffset) y = maxOffset;
+    if (y < -maxOffset) y = -maxOffset;
+
+    setOffset({ x, y });
+  };
+
+  const onDragStart = (e) => {
+    e.preventDefault();
+    dragging.current = true;
+    lastPos.current = {
+      x: e.clientX || (e.touches && e.touches[0].clientX),
+      y: e.clientY || (e.touches && e.touches[0].clientY),
+    };
+  };
+
+  const onDragMove = (e) => {
+    if (!dragging.current || zoomLevel === 1) return;
+
+    const currentX = e.clientX || (e.touches && e.touches[0].clientX);
+    const currentY = e.clientY || (e.touches && e.touches[0].clientY);
+    if (currentX == null || currentY == null) return;
+
+    const deltaX = currentX - lastPos.current.x;
+    const deltaY = currentY - lastPos.current.y;
+
+    lastPos.current = { x: currentX, y: currentY };
+
+    setOffset(prev => {
+      const newOffset = { x: prev.x + deltaX, y: prev.y + deltaY };
+      const containerSize = 500;
+      const imageSize = containerSize * zoomLevel;
+      const maxOffset = (imageSize - containerSize) / 2;
+
+      let x = newOffset.x;
+      let y = newOffset.y;
+      if (x > maxOffset) x = maxOffset;
+      if (x < -maxOffset) x = -maxOffset;
+      if (y > maxOffset) y = maxOffset;
+      if (y < -maxOffset) y = -maxOffset;
+
+      return { x, y };
+    });
+  };
+
+  const onDragEnd = () => {
+    dragging.current = false;
+  };
+
+  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (error) return <div className="text-center text-red-500 mt-10">{error}</div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-white">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
-          {/* Product Image */}
-          <div className="w-full md:w-1/2 flex justify-center items-center p-6 bg-gradient-to-br from-cyan-100 to-cyan-50 rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-105">
-            <img
-              src={product.imageurl}
-              alt={product.name}
-              className="rounded-xl w-full max-w-[300px] sm:max-w-[400px] md:max-w-[450px] object-cover transition-transform duration-300 hover:scale-110"
-            />
-          </div>
+    <>
+      {product && (
+        <Helmet>
+          <title>{product.name} | Puramente Jewel</title>
+          <meta name="description" content={product.description || `Discover ${product.name} from Puramente Jewel International`} />
+          <meta name="keywords" content={`${product.name}, ${product.category}, jewelry, Puramente Jewel`} />
+          <link rel="canonical" href={`https://puramentejewel.com/singleproduct/${product._id}`} />
+        </Helmet>
+      )}
 
-          {/* Product Details */}
-          <div className="w-full md:w-1/2 p-6 bg-white rounded-2xl shadow-2xl transform transition-all duration-300 hover:shadow-3xl">
-            <p className="text-sm text-cyan-600 font-semibold tracking-wider animate-fade-in">
-              Design Code: {product.code}
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mt-2 animate-slide-up">
-              {product.name}
-            </h1>
+      <div className="container mx-auto px-4 py-10">
+        {product && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            {/* Image Section - Made larger */}
+            <div className="w-full flex flex-col items-center gap-4">
+              <div
+                className="overflow-hidden rounded-xl shadow-lg border p-2 relative"
+                style={{ 
+                  width: '100%', 
+                  maxWidth: '500px', 
+                  height: '500px',
+                  touchAction: "none", 
+                  cursor: zoomLevel > 1 ? "grab" : "default" 
+                }}
+                onMouseDown={onDragStart}
+                onMouseMove={onDragMove}
+                onMouseUp={onDragEnd}
+                onMouseLeave={onDragEnd}
+                onTouchStart={onDragStart}
+                onTouchMove={onDragMove}
+                onTouchEnd={onDragEnd}
+                onTouchCancel={onDragEnd}
+              >
+                <img
+                  src={getImageSrc(product)}
+                  alt={product.name}
+                  onError={(e) => (e.target.src = "/default-placeholder.png")}
+                  className="object-contain select-none w-full h-full"
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${offset.x / zoomLevel}px, ${offset.y / zoomLevel}px)`,
+                    transition: dragging.current ? "none" : "transform 0.3s ease",
+                    userSelect: "none",
+                  }}
+                  draggable={false}
+                />
+              </div>
 
-            {/* Quantity Selector + Add/Remove Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-center">
-              {!isInCart && (
-                <div className="flex items-center justify-center gap-4">
-                  <button
-                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
-                    className="bg-cyan-600 text-white px-3 py-1 rounded-full text-xl hover:bg-cyan-700"
-                  >
-                    −
-                  </button>
-                  <span className="font-bold text-2xl">{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(prev => prev + 1)}
-                    className="bg-cyan-600 text-white px-3 py-1 rounded-full text-xl hover:bg-cyan-700"
-                  >
-                    +
-                  </button>
+              {/* Zoom Controls */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={decreaseZoom}
+                  className="bg-cyan-600 text-white px-3 py-2 rounded-full hover:bg-cyan-500 transition"
+                  disabled={zoomLevel <= 1}
+                >
+                  <ZoomOut size={18} />
+                </button>
+                <span className="font-semibold text-cyan-800">Zoom: {zoomLevel.toFixed(2)}x</span>
+                <button
+                  onClick={increaseZoom}
+                  className="bg-cyan-600 text-white px-3 py-2 rounded-full hover:bg-cyan-500 transition"
+                  disabled={zoomLevel >= 3} // Updated max zoom
+                >
+                  <ZoomIn size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* Details Section */}
+            <div className="space-y-4">
+              <h1 className="text-3xl font-bold text-cyan-800">{product.name}</h1>
+              <p className="text-cyan-700 font-medium">
+                Design Code: <span className="font-semibold">{product.code}</span>
+              </p>
+
+              {/* Compact Description */}
+              {product.description && (
+                <div className="mt-4">
+                  <p className="text-cyan-900 font-bold text-lg">Description:</p>
+                  <p className="text-gray-700 line-clamp-3"> {/* Limiting to 3 lines */}
+                    {product.description}
+                  </p>
                 </div>
               )}
 
-              <button
-                onClick={isInCart ? handleRemoveFromCart : handleAddToCart}
-                className={`${
-                  isInCart
-                    ? "bg-cyan-600 hover:bg-cyan-700"
-                    : "bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800"
-                } text-white px-6 py-4 rounded-xl font-bold shadow-lg transform transition-all duration-300 hover:scale-105 w-full sm:w-auto`}
-              >
-                {isInCart ? "Remove Item" : "Add to List"}
-              </button>
-            </div>
+              {/* Quantity Selector */}
+              <div className="flex items-center gap-3 mt-6">
+                <button
+                  className="bg-cyan-600 text-white px-3 py-1 rounded-full"
+                  onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                >-</button>
+                <input
+                  type="number"
+                  value={quantity}
+                  min={1}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    if (!isNaN(val) && val > 0) setQuantity(val);
+                  }}
+                  className="w-16 text-center border border-cyan-300 rounded-md text-cyan-800 font-semibold"
+                />
+                <button
+                  className="bg-cyan-600 text-white px-3 py-1 rounded-full"
+                  onClick={() => setQuantity(q => q + 1)}
+                >+</button>
+              </div>
 
-            <div className="mt-8 flex justify-around text-cyan-700">
-              <button className="flex items-center hover:text-cyan-900 transition-colors duration-200 animate-pulse-slow">
-                <Phone className="mr-2" size={24} /> Enquiry
-              </button>
-              <button className="flex items-center hover:text-cyan-900 transition-colors duration-200 animate-pulse-slow">
-                <Share2 className="mr-2" size={24} /> Share
-              </button>
-            </div>
+              {/* Cart Buttons */}
+              <div className="mt-6">
+                {isInCart ? (
+                  <button
+                    onClick={handleRemoveFromCart}
+                    className="w-full bg-red-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-red-600 transition"
+                  >
+                    Remove from List
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    className="w-full bg-cyan-500 text-white font-semibold py-2 rounded-lg shadow hover:bg-cyan-600 transition"
+                  >
+                    Add to List
+                  </button>
+                )}
+              </div>
 
-            <div className="mt-10">
-              <h2 className="text-xl md:text-2xl font-semibold text-gray-800 animate-fade-in">
-                {product.description}
-              </h2>
+              {/* Share & Contact */}
+              <div className="flex items-center gap-4 mt-6">
+                <a
+                  href={`tel:+919314346148`}
+                  className="flex items-center gap-2 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow hover:bg-cyan-400"
+                >
+                  <Phone className="w-4 h-4" /> Call Us
+                </a>
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-2 bg-cyan-600 text-white px-4 py-2 rounded-lg shadow hover:bg-cyan-400"
+                >
+                  <Share2 className="w-4 h-4" /> Share
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* Product Quality Section */}
-        <div className="mt-16 p-8 bg-gradient-to-br from-cyan-100 to-cyan-50 rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-102">
-          <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="w-full md:w-1/2">
-              <h2 className="text-3xl font-bold text-cyan-800 mb-6 animate-slide-up">
-                Product Quality
-              </h2>
-              <p className="text-gray-700 leading-relaxed text-lg animate-fade-in">
-                Each {product.name} undergoes rigorous testing to ensure top quality...
-              </p>
-              <ul className="list-disc list-inside mt-6 text-gray-700 space-y-2">
-                <li className="text-lg">Premium materials</li>
-                <li className="text-lg">Advanced manufacturing</li>
-                <li className="text-lg">Eco-conscious production</li>
-                <li className="text-lg">Strict quality control</li>
-              </ul>
-            </div>
-            <div className="w-full md:w-1/2 flex justify-center">
-              <img
-                src={qualityImage}
-                alt="Product Quality Check"
-                className="rounded-xl w-full max-w-[400px] object-cover shadow-md transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Quality Assurance */}
-        <div className="mt-16 p-8 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-102">
-          <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="w-full md:w-1/2">
-              <h2 className="text-3xl font-bold text-cyan-800 mb-6 animate-slide-up">
-                Quality Assurance
-              </h2>
-              <p className="text-gray-700 leading-relaxed text-lg animate-fade-in">
-                Our dedicated QA team ensures every product meets international standards...
-              </p>
-              <ul className="list-disc list-inside mt-6 text-gray-700 space-y-2">
-                <li className="text-lg">ISO-certified facilities</li>
-                <li className="text-lg">Ongoing audits</li>
-                <li className="text-lg">User feedback loops</li>
-                <li className="text-lg">24/7 quality support</li>
-              </ul>
-            </div>
-            <div className="w-full md:w-1/2 flex justify-center">
-              <img
-                src={assuranceImage}
-                alt="Quality Assurance"
-                className="rounded-xl w-full max-w-[400px] object-cover shadow-md transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Why Choose Us */}
-        <div className="mt-16 p-8 bg-gradient-to-br from-cyan-100 to-cyan-50 rounded-2xl shadow-2xl transform transition-all duration-300 hover:scale-102">
-          <h2 className="text-3xl font-bold text-cyan-800 mb-6 animate-slide-up">
-            Why Choose Us?
-          </h2>
-          <p className="text-gray-700 leading-relaxed text-lg animate-fade-in">
-            Choosing {product.name} means investing in quality, innovation, and customer care.
-          </p>
-          <div className="mt-8">
-            <Link to="/aboutus">
-              <button className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg transform transition-all duration-300 hover:scale-105">
-                Learn More About Our Commitment
-              </button>
-            </Link>
-          </div>
+        <div className="mt-20">
+          <WhoWeAre />
         </div>
       </div>
-      <WhoWeAre />
-    </div>
+    </>
   );
 }

@@ -93,13 +93,24 @@ export default function TopProduct() {
     }));
     updateQuantity(product._id, value);
   };
+  const getImageSrc = (product) => {
+  if (product.cloudinaryId) {
+    return `https://res.cloudinary.com/ddtharbsi/image/upload/c_fill,w_400,h_400,q_auto,f_auto/${product.cloudinaryId}`;
+  }
+
+  if (product.imageurl && product.imageurl.startsWith("http")) {
+    return product.imageurl;
+  }
+
+  return "/default-placeholder.jpg"; // 🔄 Optional fallback
+};
 
   return (
     <section className="py-16 bg-gradient-to-br from-cyan-50 via-white to-cyan-100 overflow-hidden">
       <div className="container mx-auto px-4">
         <div data-aos="zoom-in" className="text-center p-7 mb-12 relative">
           <h2 className="text-3xl p-4 sm:text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-cyan-600 via-cyan-700 to-cyan-800 bg-clip-text text-transparent relative z-10">
-            Best Selling Selections
+            Most Loved  Fashion Jewellery
           </h2>
           <div className="w-32 h-1 bg-cyan-600 mx-auto mt-4 rounded-full" />
         </div>
@@ -133,8 +144,9 @@ export default function TopProduct() {
                     <Link to={`/singleproduct/${product._id}`}>
                       <div className="relative flex justify-between items-center h-40 sm:h-56 overflow-hidden">
                         <img
-                          src={product.image || product.imageurl}
-                          alt={product.title}
+                          src={getImageSrc(product)} 
+                        alt={`${product.name} – ${product.category || "jewellery"} by Puramente | costume jewellery manufacturers in India, indian jewellery wholesale suppliers`}
+
                           className="w-full h-full object-contain transition-transform duration-700 hover:scale-110"
                         />
                       </div>

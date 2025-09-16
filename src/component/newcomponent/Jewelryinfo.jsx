@@ -10,15 +10,12 @@ const Jewelryinfo = () => {
       content: (
         <div className="space-y-4 text-gray-600 leading-relaxed">
           <p>
-            In the dazzling world of jewelry, where artistry meets
-            craftsmanship, Puramente International shines as a beacon of
-            excellence. As one of India’s most trusted jewelry manufacturers, we
-            are your premier destination for custom jewelry and wholesale brass
-            and 925 sterling silver pieces.
+          In the dazzling world of jewelry, where artistry meets craftsmanship, Puramente International shines as a beacon of excellence. As one of the most trusted imitation jewelry manufacturers of India ,we are your premiere destination for custom jewelry.
+ and wholesale brass and 925 sterling silver pieces.
+
           </p>
           <p>
-            Serving Jewelry Retailers, Brands, Designers, and Wholesalers
-            worldwide, we invite you to embark on a sparkling journey with us!
+            Serving Jewelry Retailers, Brands, Designers, and Wholesalers worldwide, we invite you to embark on a sparkling journey with us!
           </p>
         </div>
       ),
@@ -48,14 +45,10 @@ const Jewelryinfo = () => {
       content: (
         <div className="space-y-4 text-gray-600 leading-relaxed">
           <p>
-            At Puramente International, jewelry is a canvas of art and emotion.
-            Our custom jewelry manufacturing transforms your sketches and dreams
-            into tangible treasures.
+           At Puramente International, jewelry is a canvas of art and emotion.Our custom jewelry manufacturing unit in India transforms your sketches and dreams into tangible treasures.
           </p>
           <p>
-            With skilled artisans and a blend of handmade and casting
-            techniques, we craft each piece with passion, turning your vision
-            into timeless keepsakes.
+            With skilled artisans and a blend of handmade and casting techniques, we craft each piece with passion, turning your vision into timeless keepsakes.
           </p>
         </div>
       ),
@@ -127,7 +120,7 @@ const Jewelryinfo = () => {
     
 
     conclusion: {
-      title: "Your Journey Begins",
+      title: "Crafted in india with precision",
       content: (
         <div className="space-y-4 text-gray-600 leading-relaxed">
           <p>
@@ -142,7 +135,7 @@ const Jewelryinfo = () => {
         </div>
       ),
       image:
-        "/yourjourney.jpg",
+        "https://res.cloudinary.com/dqibmkvib/image/upload/v1747898205/Your_Journey_Begins_aj4j6i.jpg",
     },
   };
 

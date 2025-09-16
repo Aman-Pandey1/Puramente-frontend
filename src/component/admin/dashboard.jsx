@@ -40,6 +40,10 @@ export default function Dashboard() {
               <Link to="/blog-list" className="flex items-center gap-2">
             <FileText /> Blog List
           </Link>
+           <Link to="/product-list" className="flex items-center gap-2">
+            <FileText /> Product List
+          </Link>
+          
         </nav>
       </div>
 
@@ -69,6 +73,9 @@ export default function Dashboard() {
           </Link>
             <Link to="/blog-list" className="flex items-center gap-2">
             <FileText /> Blog List
+          </Link>
+            <Link to="/product-list" className="flex items-center gap-2">
+            <FileText /> Product List
           </Link>
         </div>
       )}

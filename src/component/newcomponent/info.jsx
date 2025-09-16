@@ -82,7 +82,7 @@ const InfoCards = () => {
       ),
       title: "Visit Jaipur",
       description:
-        "Journey to Jaipur, where rich heritage and masterful craftsmanship create an unforgettable experience.",
+        "Start your exquisite journey from jaipur jewelry manufactures , where rich heritage and  master craftsmanship create an unforgettable experience",
       page: "/visitjaipur",
     },
   ];

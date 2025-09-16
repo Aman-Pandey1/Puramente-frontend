@@ -28,7 +28,9 @@ import BlogDetails from "./component/button/Blogs/BlogDetails";
 import AdminBlogList from "./component/admin/component/AdminBlogList";
 import BlogUpload from "./component/admin/component/BlogUpload";
 import EditBlog from "./component/admin/component/Editblog";
-
+import EditProduct from "./component/admin/component/edit-product";
+import { Navigate } from "react-router-dom"; // 👈 import this at top
+import AllDesigns from "./component/pages/alldesign";
 function App() {
   return (
     <>
@@ -42,6 +44,7 @@ function App() {
               <Route path="/cart" element={<Checkout />}></Route>
               <Route path="/shopall" element={<Shopall />}></Route>
               <Route path="/aboutus" element={<Aboutus />}></Route>
+           <Route path="/category/alldesigns" element={<AllDesigns />} />
               <Route path="/contactus" element={<Contactus />}></Route>
               <Route
                 path="/category/:category/:subcategory"
@@ -54,7 +57,7 @@ function App() {
               <Route path="/dashboard" element={<Adminhome />}></Route>
               <Route path="/addproduct" element={<AddProduct />}></Route>
               <Route path="/orderlist" element={<OrderList />}></Route>
-              <Route path="/productlist" element={<AdminProductList />}></Route>
+              <Route path="/product-list" element={<AdminProductList />}></Route>
               <Route path="/singleproduct" element={<SingleProduct />}></Route>
               <Route path="/category" element={<Category/>}></Route>
               <Route path="/fairtrade" element={<Fairtradepage />}></Route>
@@ -63,9 +66,17 @@ function App() {
               <Route path="visitjaipur" element={<VisitJaipur />}></Route>
               <Route path="/uploadblog" element={<BlogUpload/>} />
               <Route path="/blogs" element={<ShowBlogs/>} />
-              <Route path="/blogs/:id" element={<BlogDetails/>} />
+              <Route path="/blogs/:slug" element={<BlogDetails/>} />
+
               <Route path="/blog-list" element={<AdminBlogList/>} />
               <Route path="/admin/edit-blog/:id" element={<EditBlog/>} />
+      
+              <Route path="/admin/edit-product/:id" element={<EditProduct/>} />
+<Route path="/category/Pendant" element={<Navigate to="/category/Pendants" replace />} />
+<Route path="/category/Ring" element={<Navigate to="/category/Rings" replace />} />
+<Route path="/category/Bracelet" element={<Navigate to="/category/Bracelets" replace />} />
+<Route path="/category/Earring" element={<Navigate to="/category/Earrings" replace />} />
+<Route path="/category/Necklace" element={<Navigate to="/category/Necklaces" replace />} />
               <Route
                 path="/category/:category"
                 element={<Categorycart />}

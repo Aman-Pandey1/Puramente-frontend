@@ -43,7 +43,7 @@ export default function Navbar2() {
     },
     {
       name: "Pendant",
-      category: "Pendant",
+      category: "Pendants",
       subcategories: [
         { name: "With Gemstone", path: "withgemstone" },
         { name: "Without Gemstone", path: "withoutgemstone" },
@@ -57,7 +57,7 @@ export default function Navbar2() {
   return (
     <div>
       <nav className="relative hidden lg:flex gap-8 items-center h-16 w-full">
-        <div className="text-button-orange  flex justify-between items-center px-24  w-full gap-10 p-2 text-lg font-bold">
+        <div className="text-button-orange flex justify-between items-center px-24 w-full gap-10 p-2 text-lg font-bold">
           <Link
             onMouseEnter={() => setDropdown(false)}
             className="hover:text-cyan-600"
@@ -65,6 +65,7 @@ export default function Navbar2() {
           >
             {t("Home")}
           </Link>
+
           <Link
             onMouseEnter={() => setDropdown(false)}
             className="hover:text-cyan-600"
@@ -73,6 +74,7 @@ export default function Navbar2() {
             {t("About us")}
           </Link>
 
+          {/* Jewellery Design Dropdown */}
           <div className="relative" onMouseEnter={() => setDropdown(true)}>
             <div className="hover:text-cyan-600 flex items-center cursor-pointer">
               Jewellery Design
@@ -83,15 +85,29 @@ export default function Navbar2() {
                 onMouseLeave={() => setDropdown(false)}
                 className="absolute z-50 left-0 mt-2 w-56 bg-white shadow-lg rounded-md"
               >
+                {/* ✅ All Designs Option */}
+                <li className="relative">
+                  <Link
+                    to="/category/alldesigns"
+                    className="flex justify-between items-center px-4 py-2 hover:bg-cyan-100 text-black font-semibold"
+                  >
+                    All Designs
+                  </Link>
+                </li>
+
+                {/* ✅ Rest Categories */}
                 {categories.map((item) => (
                   <li key={item.category} className="relative group">
-                    <div className="px-4 py-2 hover:bg-cyan-100 text-black cursor-pointer flex justify-between items-center">
+                    <Link
+                      to={`/category/${item.name}`}
+                      className="flex justify-between items-center px-4 py-2 hover:bg-cyan-100 text-black"
+                    >
                       {item.name}
                       <ChevronDown className="w-4 h-4 ml-1" />
-                    </div>
+                    </Link>
 
                     {/* Subcategories */}
-                    <ul className="absolute top-0 left-full ml-1 hidden group-hover:block bg-white border shadow-lg rounded-md w-56 z-50">
+                    <ul className="absolute top-0 left-full hidden group-hover:block bg-white border shadow-lg rounded-md w-56 z-50">
                       {item.subcategories.map((sub) => (
                         <li key={sub.path}>
                           <Link
@@ -117,7 +133,11 @@ export default function Navbar2() {
             Fair Trade Practicing
           </Link>
 
-          <Link className="hover:text-cyan-600" to="/contactus">
+          <Link
+            onMouseEnter={() => setDropdown(false)}
+            className="hover:text-cyan-600"
+            to="/contactus"
+          >
             {t("Contact us")}
           </Link>
 
@@ -150,7 +170,6 @@ export default function Navbar2() {
               >
                 <FaYoutube className="h-6 hover:text-cyan-500 w-8" />
               </a>
-             
             </div>
           )}
         </div>

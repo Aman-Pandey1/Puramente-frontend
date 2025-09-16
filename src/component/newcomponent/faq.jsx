@@ -8,7 +8,7 @@ function Faqsection() {
   const faqs = [
     {
       question: "What sets Puramente International apart as a jewelry manufacturer?",
-      answer: "Puramente International stands out due to its commitment to craftsmanship, innovative designs, and sustainable practices. We blend traditional techniques with modern technology to create unique, high-quality jewelry.",
+      answer: "Puramente International stands out due to its commitment to craftsmanship, innovative designs, and sustainable practices. We blend traditional techniques with modern technology to create Unique and high quality fashion jewelry",
     },
     {
       question: "Do you offer customization for your jewelry designs?",
@@ -16,11 +16,11 @@ function Faqsection() {
     },
     {
       question: "What types of materials do you use in your jewelry manufacturing?",
-      answer: "We use a variety of high-quality materials including sterling silver, gold, platinum, and ethically sourced gemstones to ensure durability and elegance.",
+      answer: "We use a variety of high-quality materials including 925 sterling silver, gold, platinum, and ethically sourced gemstones to ensure durability and elegance.",
     },
     {
       question: "Can I purchase your jewelry as a wholesaler?",
-      answer: "Yes, we welcome wholesale inquiries! Please contact our sales team for more details and to discuss bulk order options.",
+      answer: "Yes, we work as jewelry wholesalers. We welcome wholesale inquiries! Please contact our sales team for more details and to discuss bulk order options.",
     },
     {
       question: "How can I visit your showroom to make jewelry selections?",

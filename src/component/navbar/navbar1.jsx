@@ -3,11 +3,10 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import BaseURL from "../../baseurl";
-import { Isauthanticate, Logout } from "../authantication/isauthanticat";
+import { Isauthanticate, Logout, IsAdmin } from "../authantication/isauthanticat";
 import { Menu } from "lucide-react";
 import { IoCloseSharp } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
-import { IsAdmin } from "../authantication/isauthanticat";
 import { useCart } from "../newcomponent/cartcontext";
 import LanguageSwitcher from "../language/languagetranslator";
 
@@ -15,9 +14,9 @@ export default function Navbar1() {
   const { t, i18n } = useTranslation();
   const [sidemenu, setsidemenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [mobileSearchTerm, setMobileSearchTerm] = useState(""); // State for mobile search
+  const [mobileSearchTerm, setMobileSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [mobileFilteredProducts, setMobileFilteredProducts] = useState([]); // State for mobile search results
+  const [mobileFilteredProducts, setMobileFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { cartItems } = useCart();
@@ -57,7 +56,6 @@ export default function Navbar1() {
     const delayDebounceFn = setTimeout(() => {
       fetchProducts(searchTerm);
     }, 500);
-
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm]);
 
@@ -65,9 +63,18 @@ export default function Navbar1() {
     const delayDebounceFn = setTimeout(() => {
       fetchProducts(mobileSearchTerm, true);
     }, 500);
-
     return () => clearTimeout(delayDebounceFn);
   }, [mobileSearchTerm]);
+
+  const getImageSrc = (product) => {
+    if (product.cloudinaryId) {
+      return `https://res.cloudinary.com/ddtharbsi/image/upload/c_fill,w_400,h_400,q_auto,f_auto/${product.cloudinaryId}`;
+    }
+    if (product.imageurl && product.imageurl.startsWith("http")) {
+      return product.imageurl;
+    }
+    return "/default-placeholder.jpg";
+  };
 
   return (
     <div>
@@ -80,6 +87,8 @@ export default function Navbar1() {
             alt="logo"
           />
         </Link>
+
+        {/* Search */}
         <div className="w-[70%] relative">
           <input
             className="bg-white h-11 w-[70%] focus:outline-0 ml-8 p-4"
@@ -91,6 +100,8 @@ export default function Navbar1() {
           <button className="bg-button-orange -ml-2 relative font-sans text-white h-11 w-36">
             {t("SEARCH")}
           </button>
+
+          {/* Search dropdown */}
           {searchTerm.trim() !== "" && (
             <div className="absolute bg-white shadow-lg w-[70%] ml-8 mt-2 max-h-60 overflow-y-auto z-10">
               {loading ? (
@@ -106,7 +117,7 @@ export default function Navbar1() {
                     onClick={() => setSearchTerm("")}
                   >
                     <img
-                      src={product.imageurl}
+                      src={getImageSrc(product)}
                       alt={product.name}
                       className="h-10 w-10 object-cover mr-4"
                     />
@@ -121,11 +132,11 @@ export default function Navbar1() {
             </div>
           )}
         </div>
+
+        {/* Right side buttons */}
         <div className="flex items-center w-72 mr-28 gap-2">
-          {/* Cart Button */}
-          
+          {/* Cart */}
           <Link to="/cart" className="relative flex w-10 h-10">
-         
             <img className="w-10 h-10" src="/cart2.svg" alt="cart" />
             {cartItems.length > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
@@ -134,17 +145,10 @@ export default function Navbar1() {
             )}
           </Link>
 
-          {/* <button
-            onClick={() =>
-              i18n.language === "en"
-                ? i18n.changeLanguage("hi")
-                : i18n.changeLanguage("en")
-            }
-            className="text-white w-32 h-8 rounded-sm bg-button-orange text-lg"
-          >
-            {t("Language")}
-          </button> */}
-          <LanguageSwitcher/>
+          {/* Language */}
+          <LanguageSwitcher />
+
+          {/* Login / Logout */}
           {Isauthanticate() ? (
             <button
               onClick={Logout}
@@ -215,9 +219,9 @@ export default function Navbar1() {
             </Link>
           )}
 
-          {/* Mobile Search Input */}
+          {/* Mobile Search */}
           <input
-            className="bg-white  w-40 h-12 font-light focus:outline-none px-4"
+            className="bg-white w-40 h-12 font-light focus:outline-none px-4"
             placeholder="Search"
             type="text"
             value={mobileSearchTerm}
@@ -238,7 +242,7 @@ export default function Navbar1() {
                     onClick={() => setMobileSearchTerm("")}
                   >
                     <img
-                      src={product.imageurl}
+                      src={getImageSrc(product)}
                       alt={product.name}
                       className="h-10 w-10 object-cover mr-4"
                     />
@@ -252,18 +256,27 @@ export default function Navbar1() {
               )}
             </div>
           )}
-          <Link onClick={togglesidemenu} to="/">{t("Home")}</Link>
-          <Link onClick={togglesidemenu} to="shopall">Jewellery Design </Link>
-          <Link onClick={togglesidemenu} to="/contactus">{t("Contact Us")}</Link>
-          <Link onClick={togglesidemenu} to="/aboutus">{t("About Us")}</Link>
-          <Link onClick={togglesidemenu} to="/faq">FAQ</Link>
-          <Link onClick={togglesidemenu} to="/privacy"> Privacy</Link>
+          <Link onClick={togglesidemenu} to="/">
+            {t("Home")}
+          </Link>
+          <Link onClick={togglesidemenu} to="shopall">
+            Jewellery Design
+          </Link>
+          <Link onClick={togglesidemenu} to="/contactus">
+            {t("Contact Us")}
+          </Link>
+          <Link onClick={togglesidemenu} to="/aboutus">
+            {t("About Us")}
+          </Link>
+          <Link onClick={togglesidemenu} to="/faq">
+            FAQ
+          </Link>
+          <Link onClick={togglesidemenu} to="/privacy">
+            Privacy
+          </Link>
           {IsAdmin() && (
             <Link to="dashboard">
-              <button
-                className="bg-cyan-900 border-black text-lg w-44 h-10 text-white
-              "
-              >
+              <button className="bg-cyan-900 border-black text-lg w-44 h-10 text-white">
                 Dashboard
               </button>
             </Link>

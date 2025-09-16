@@ -15,8 +15,8 @@ const WhoWeAre = () => {
             Crafting Timeless <br /> Gemstone Masterpieces <br /> in India
           </h1>
           <p className="text-gray-700 text-lg lg:text-xl max-w-md mx-auto lg:mx-0 mb-8 leading-relaxed">
-            Experience the art of bespoke jewelry with our handcrafted gemstone
-            collection, blending tradition with elegance for your unique style.
+           
+Experience the art of bespoke jewelry with our handcrafted gemstone collection, blending tradition With our fashionable gemstone collection.
           </p>
           <Link
             to="/contactus"

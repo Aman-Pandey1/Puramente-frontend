@@ -2,15 +2,16 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import BaseURL from "../../baseurl";
+import { useCart } from "../../component/newcomponent/cartcontext"; // ✅ Cart context import
 
 AOS.init();
 
 export default function Login2() {
   const { t } = useTranslation();
+  const { setCartFromBackend } = useCart(); // ✅ new function to set cart after login
 
   const [logindata, setLogindata] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -25,14 +26,22 @@ export default function Login2() {
     e.preventDefault();
     setError("");
     try {
-      const response = await axios.post(
-        `${BaseURL}/api/users/login`,
-        logindata
-      );
+      const response = await axios.post(`${BaseURL}/api/users/login`, logindata);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", response.data.user.role);
-      console.log("Login Success:", response.data);
-      console.log(response.data.user.role);
+      localStorage.setItem("userId", response.data.user._id); // ✅ Save userId for cart
+
+      // ✅ Backend se cart fetch karo
+      try {
+        const cartRes = await axios.get(`${BaseURL}/api/cart/${response.data.user._id}`, {
+          headers: { Authorization: `Bearer ${response.data.token}` }
+        });
+        if (cartRes.data?.items) {
+          setCartFromBackend(cartRes.data.items); // ✅ Cart context update
+        }
+      } catch (err) {
+        console.warn("No cart found or failed to fetch cart:", err.message);
+      }
 
       navigate("/");
     } catch (err) {

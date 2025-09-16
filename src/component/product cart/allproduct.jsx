@@ -82,6 +82,17 @@ const ProductCard = () => {
       productListRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 100);
   };
+  const getImageSrc = (product) => {
+  if (product.cloudinaryId) {
+    return `https://res.cloudinary.com/ddtharbsi/image/upload/c_fill,w_400,h_400,q_auto,f_auto/${product.cloudinaryId}`;
+  }
+
+  if (product.imageurl && product.imageurl.startsWith("http")) {
+    return product.imageurl;
+  }
+
+  return "/default-placeholder.jpg"; // 🔄 Optional fallback
+};
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-12 bg-gradient-to-br from-white via-cyan-50 to-cyan-100 min-h-screen">
@@ -107,7 +118,7 @@ const ProductCard = () => {
             <div className="relative w-full h-36">
               <Link to={`/singleproduct/${product._id}`}>
                 <img
-                  src={product.image || product.imageurl}
+                 src={getImageSrc(product)} 
                   alt={product.name}
                   className="w-full h-full object-contain rounded-lg transform hover:scale-105 transition-all duration-500"
                 />

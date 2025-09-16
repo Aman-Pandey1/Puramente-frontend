@@ -5,6 +5,7 @@ import Navbar2 from "../navbar/navbar2";
 import Footer from "../footer/footer";
 import WhatsAppButton from "../newcomponent/whatsappbutton";
 import Loader from "../loader/loader";
+import { Helmet } from "react-helmet-async";
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -22,6 +23,13 @@ const Layout = ({ children }) => {
   }, [location.pathname]);
 
   return (
+    <>
+       <Helmet>
+        <meta
+          name="google-site-verification"
+          content="8o-zQTBUtcnHGEY_Cq1xMaeyzjK57z1J6LgIrR0J_gw"
+        />
+      </Helmet>
     <div>
       <Navbar1 />
       <Navbar2 />
@@ -37,6 +45,7 @@ const Layout = ({ children }) => {
       <WhatsAppButton />
       <Footer />
     </div>
+    </>
   );
 };
 

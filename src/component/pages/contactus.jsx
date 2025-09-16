@@ -7,6 +7,7 @@ import BaseURL from "../../baseurl";
 import Select from "react-select";
 import { FlagIcon } from "react-flag-kit"; // Alternative to react-country-flag
 import { FaLocationArrow } from "react-icons/fa6";
+import { Helmet } from "react-helmet-async";
 
 const countryOptions = [
   { value: "US", label: "United States", flag: "US" },
@@ -100,6 +101,23 @@ export default function Contactus() {
   };
 
   return (
+      <>
+      <Helmet>
+        <title>Contact Puramente Jewel | Jewelry Experts</title>
+        <meta
+          name="description"
+          content="Get in touch with Puramente Jewel International for inquiries, orders, and support. Serving customers in France, UK, USA & across Europe."
+        />
+        <meta
+          name="keywords"
+          content="Contact Puramente Jewel, Jewelry Support, Jewelry Inquiries Europe"
+        />
+        <link rel="canonical" href="https://puramentejewel.com/contactus" />
+      </Helmet>
+
+      <h1  className="text-center text-4xl font-bold text-gray-800 mt-8 mb-6 capitalize">Contact Puramente Jewel</h1>
+      {/* Rest of Contact Us page */}
+    
     <div>
       {showPopup && (
         <div
@@ -123,7 +141,7 @@ export default function Contactus() {
             <div className="bg-white rounded-2xl shadow-xl p-8">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <h2 className="text-3xl font-bold text-center bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                  {t("contact_us")}
+                  {t("Contact Us")}
                 </h2>
 
                 <div className="space-y-2">
@@ -131,7 +149,7 @@ export default function Contactus() {
                     htmlFor="name"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    {t("your_name")}
+                    {t("Your Name")}
                   </label>
                   <input
                     type="text"
@@ -139,7 +157,7 @@ export default function Contactus() {
                     id="name"
                     name="name"
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg"
-                    placeholder={t("enter_name")}
+                    placeholder={t("enter name")}
                     value={contactdata.name}
                     required
                   />
@@ -334,5 +352,6 @@ export default function Contactus() {
         </div>
       </div>
     </div>
+    </>
   );
 }

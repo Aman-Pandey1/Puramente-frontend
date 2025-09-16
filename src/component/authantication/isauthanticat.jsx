@@ -14,6 +14,7 @@ export function IsAdmin() {
 
 export function Logout() {
   localStorage.removeItem("token");
-  localStorage.removeItem("role")
+  localStorage.removeItem("role");
+  // ❌ Cart ko mat delete karo, taki login ke baad data rahe
   window.location.reload();
 }

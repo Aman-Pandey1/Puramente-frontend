@@ -13,7 +13,7 @@ export default function Collection() {
     { name: t("Bracelets"), img: "https://i.postimg.cc/SxwqS5Dk/ND008-B-PMS.jpg", slug: "bracelet" },
     { name: t("Earrings"), img: "https://i.postimg.cc/kGtB48Kp/COL0032E.jpg", slug: "earring" },
     { name: t("Necklaces"), img: "https://i.postimg.cc/zXQY76mK/NS0242.jpg", slug: "necklace" },
-    { name: t("Pendant"), img: "https://i.postimg.cc/zXQY76mK/NS0242.jpg", slug: "pendant" },
+    { name: t("Pendants"), img: "https://i.postimg.cc/zXQY76mK/NS0242.jpg", slug: "pendant" },
   ];
 
   return (
@@ -43,3 +43,4 @@ export default function Collection() {
     </div>
   );
 }
+ 

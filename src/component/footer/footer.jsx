@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { FaLinkedin, FaYoutube } from "react-icons/fa6";
 import { FaFacebook } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
+import { Isauthanticate, Logout } from "../authantication/isauthanticat";
 
 export default function Footer() {
   const { t } = useTranslation(); // i18n hook
@@ -77,22 +78,33 @@ export default function Footer() {
             </Link>
           </div>
 
-          <div className="flex w-1/4 flex-col h-36 ml-10 mt-8 gap-2 items-start">
-            <button className="text-lg text-cyan-500 hover:text-cyan-500">
-              {t("MyAccount")}
-            </button>
-            <Link to="/privacy">
-              <button className="hover:text-cyan-500">{t("Privacy")}</button>
-            </Link>
+         <div className="flex w-1/4 flex-col h-36 ml-10 mt-8 gap-2 items-start">
+  <button className="text-lg text-cyan-500 hover:text-cyan-500">
+    {t("MyAccount")}
+  </button>
+  <Link to="/privacy">
+    <button className="hover:text-cyan-500">{t("Privacy")}</button>
+  </Link>
 
-            <Link to="/cart">
-              <button className="hover:text-cyan-500">{t("Checkout")}</button>
-            </Link>
-            <Link to="/faq">
-              <button className="hover:text-cyan-500">FAQ</button>
-            </Link>
-             <Link to="/blogs">Blog</Link>
-          </div>
+  <Link to="/cart">
+    <button className="hover:text-cyan-500">{t("Checkout")}</button>
+  </Link>
+  <Link to="/faq">
+    <button className="hover:text-cyan-500">FAQ</button>
+  </Link>
+  <Link to="/blogs">Blog</Link>
+
+  {Isauthanticate() ? (
+    <button onClick={Logout} className="hover:text-cyan-500">
+      Logout
+    </button>
+  ) : (
+    <Link to="/login">
+      <button className="hover:text-cyan-500">Login</button>
+    </Link>
+  )}
+</div>
+
 
           <div className="flex w-1/4 flex-col h-36 ml-10 mt-8 gap-2 items-start">
             <button className="text-lg text-cyan-500 hover:text-cyan-500">
@@ -161,6 +173,16 @@ export default function Footer() {
               {t("Contact us")}
             </Link>
             <Link to="/blogs">Blog</Link>
+            {Isauthanticate() ? (
+  <button onClick={Logout} className="hover:text-cyan-500">
+    Logout
+  </button>
+) : (
+  <Link to="/login">
+    <button className="hover:text-cyan-500">Login</button>
+  </Link>
+)}
+
           </div>
           <div className="flex w-1/2 flex-col items-center text-sm gap-2">
             <button className=" text-cyan-500 hover:text-cyan-500">

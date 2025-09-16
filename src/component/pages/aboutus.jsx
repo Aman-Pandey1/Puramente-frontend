@@ -6,12 +6,30 @@ import InfoFairTrade from "../newcomponent/infofairtrade";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import VisitJaipur from "../newcomponent/visitjaipur";
+import { Helmet } from "react-helmet-async";
 
 AOS.init();
 
 export default function Aboutus() {
   const { t } = useTranslation(); // Initialize translation
   return (
+      <>
+      <Helmet>
+        <title>About Us | Puramente Jewel International</title>
+        <meta
+          name="description"
+          content="Learn about Puramente Jewel International – our vision, heritage, and craftsmanship serving customers in France, UK, USA & Europe."
+        />
+        <meta
+          name="keywords"
+          content="About Puramente Jewel, Jewelry Manufacturer, Handmade Jewelry, Puramente International"
+        />
+        <link rel="canonical" href="https://puramentejewel.com/aboutus" />
+      </Helmet>
+
+      <h1  className="text-center text-4xl font-bold text-gray-800 mt-8 mb-6 capitalize">About Puramente Jewel International</h1>
+      {/* Rest of your About Us page */}
+   
     <div className="bg-cyan-200">
       {/* WHY ARAWALI JEWELLERS SECTION */}
       <div className="h-screen w-full flex flex-col lg:mt-0 lg:flex-row">
@@ -20,18 +38,10 @@ export default function Aboutus() {
             {t("Why Puramente International")}
           </h1>
           <p className="m-8 mb-0 text-center font-serif leading-8 font-semibold text-gray-700">
-            Best among all customized gemstone jewelry manufacturers in India.
-            Since 2005, Puramente International has been providing one-stop
-            services to jewelry professionals & brands worldwide. Our clients
-            come from over 19 countries throughout the world and range from
-            luxury high street boutiques to online retailers capitalizing on the
-            latest trends.
+           Best among all customized gemstone jewelry manufacturers in (jaipur) india . Since 2005, Puramente International has been providing one-stop services to jewelry professionals & brands worldwide. Our clients come from over 19 countries throughout the world and range from luxury high street boutiques to online retailers capitalizing on the latest trends.
           </p>
           <p className="m-8 text-center lg:flex hidden font-serif leading-8 font-semibold text-gray-700">
-            We are proud to have worked with some of the biggest names in the
-            jewelry industry in India and outside of india as well. We are proud
-            on us to be the best among all customized gemstone jewelry
-            manufacturers in India.
+      We are proud to have worked with some of the biggest names in the jewelry industry in India and outside of india as well. We are proud on us to be the best among all customized gemstone jewelry manufacturers in India.
           </p>
         </div>
         <div className="lg:w-1/2 flex items-center h-screen w-full">
@@ -66,7 +76,8 @@ export default function Aboutus() {
           <img
             className="h-[50vh] lg:h-[90vh] w-full"
             src="https://i.postimg.cc/NfD50gHY/IMG-6855.jpg"
-            alt=""
+              alt="Our Story – best wholesale jewelry suppliers in India, custom jewellery manufacturers India, imitation jewellery designers"
+
           />
         </div>
       </div>
@@ -76,5 +87,6 @@ export default function Aboutus() {
       <VideoSection />
       <HelpSection />
     </div>
+     </>
   );
 }
