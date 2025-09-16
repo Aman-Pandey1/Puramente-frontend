@@ -48,7 +48,7 @@ export default function SingleProduct() {
     if (product.imageurl && product.imageurl.startsWith("http")) {
       return product.imageurl;
     }
-    return "/default-placeholder.jpg";
+    return "/default-placeholder.svg";
   };
 
   const handleAddToCart = () => {
@@ -192,7 +192,7 @@ export default function SingleProduct() {
                 <img
                   src={getImageSrc(product)}
                   alt={product.name}
-                  onError={(e) => (e.target.src = "/default-placeholder.png")}
+                  onError={(e) => (e.target.src = "/default-placeholder.svg")}
                   className="object-contain select-none w-full h-full"
                   style={{
                     transform: `scale(${zoomLevel}) translate(${offset.x / zoomLevel}px, ${offset.y / zoomLevel}px)`,

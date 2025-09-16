@@ -102,7 +102,7 @@ export default function TopProduct() {
     return product.imageurl;
   }
 
-  return "/default-placeholder.jpg"; // 🔄 Optional fallback
+  return "/default-placeholder.svg"; // 🔄 Optional fallback
 };
 
   return (
@@ -142,12 +142,12 @@ export default function TopProduct() {
                     className="w-1/2 sm:w-64 bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-cyan-100"
                   >
                     <Link to={`/singleproduct/${product._id}`}>
-                      <div className="relative flex justify-between items-center h-40 sm:h-56 overflow-hidden">
+                      <div className="relative flex justify-between items-center h-52 sm:h-64 overflow-hidden">
                         <img
                           src={getImageSrc(product)} 
                         alt={`${product.name} – ${product.category || "jewellery"} by Puramente | costume jewellery manufacturers in India, indian jewellery wholesale suppliers`}
 
-                          className="w-full h-full object-contain transition-transform duration-700 hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
                         />
                       </div>
                     </Link>
@@ -155,15 +155,15 @@ export default function TopProduct() {
                     <div className="p-4">
                       <Link to={`/singleproduct/${product._id}`}>
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-xs sm:text-sm text-cyan-600 font-medium bg-cyan-50 px-2 py-1 rounded-full capitalize">
+                          <span className="text-xs sm:text-xs text-cyan-600 font-medium bg-cyan-50 px-2 py-1 rounded-full capitalize">
                             {product.name}
                           </span>
-                          <span className="text-xs text-cyan-500 font-mono bg-cyan-50 px-2 py-1 rounded-full">
+                          <span className="text-[11px] text-cyan-500 font-mono bg-cyan-50 px-2 py-1 rounded-full">
                             {product.code}
                           </span>
                         </div>
                       </Link>
-                      <h3 className="text-sm sm:text-lg font-semibold text-gray-800 mb-2">
+                      <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">
                         {product.title}
                       </h3>
                       <Link to={`/singleproduct/${product._id}`}>
@@ -198,9 +198,9 @@ export default function TopProduct() {
 
                       <button
                         onClick={() => handleToggleCart(product)}
-                        className={`mt-4 w-full ${
+                        className={`mt-3 w-full ${
                           isAdded ? "bg-cyan-700 hover:bg-cyan-800" : "bg-cyan-500 hover:bg-cyan-600"
-                        } text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
+                        } text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105`}
                       >
                         {isAdded ? "Remove Item" : "Add To List"}
                       </button>

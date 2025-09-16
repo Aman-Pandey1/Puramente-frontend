@@ -79,7 +79,7 @@ export default function SubCategoryPage() {
     if (product.imageurl && product.imageurl.startsWith("http")) {
       return product.imageurl;
     }
-    return "/default-placeholder.jpg";
+    return "/default-placeholder.svg";
   };
 
   const ProductImage = ({ product }) => {
@@ -87,7 +87,7 @@ export default function SubCategoryPage() {
     const [loading, setLoading] = useState(true);
 
     const handleError = () => {
-      setImgSrc("/default-placeholder.png");
+      setImgSrc("/default-placeholder.svg");
       setLoading(false);
     };
 
@@ -96,14 +96,14 @@ export default function SubCategoryPage() {
     };
 
     return (
-      <div className="relative w-full h-36">
+      <div className="relative w-full h-48">
         {loading && (
           <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg"></div>
         )}
         <img
           src={imgSrc}
           alt={product.name}
-          className={`w-full object-contain h-full rounded-lg ${
+          className={`w-full object-cover h-full rounded-lg ${
             loading ? "opacity-0" : "opacity-100"
           }`}
           onError={handleError}
@@ -177,11 +177,11 @@ export default function SubCategoryPage() {
                   </Link>
 
                   <div className="mt-6 text-center">
-                    <h3 className="text-sm lg:text-xl font-bold text-cyan-800 line-clamp-1 tracking-tight">
+                    <h3 className="text-base lg:text-base font-bold text-cyan-800 line-clamp-1 tracking-tight">
                       {product.name}
                     </h3>
-                    <p className="text-sm text-cyan-600 mt-1">{product.category}</p>
-                    <p className="text-xs text-cyan-500 mt-2 font-medium">
+                    <p className="text-xs text-cyan-600 mt-1">{product.category}</p>
+                    <p className="text-[11px] text-cyan-500 mt-2 font-medium">
                       Design Code:{" "}
                       <span className="font-semibold">{product.code}</span>
                     </p>
@@ -231,7 +231,7 @@ export default function SubCategoryPage() {
                     ) : (
                       <button
                         onClick={() => handleAddToCart(product)}
-                        className="mt-4 w-full bg-cyan-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
+                        className="mt-3 w-full bg-cyan-500 text-white text-sm font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-cyan-600 transition-all duration-300 transform hover:scale-105"
                       >
                         Add To List
                       </button>

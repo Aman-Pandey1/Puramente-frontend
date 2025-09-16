@@ -116,7 +116,7 @@ const Checkout = () => {
     return product.imageurl;
   }
 
-  return "/default-placeholder.jpg"; // 🔄 Optional fallback
+  return "/default-placeholder.svg"; // 🔄 Optional fallback
 };
 
   // Form submission
